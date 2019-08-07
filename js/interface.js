@@ -839,13 +839,11 @@ $('[data-push-save]').on('click', function() {
 });
 
 // Scroll accordion tab to the top
-$(document).ready(function (){
-  $('.panel-collapse').on('shown.bs.collapse', function () {
-    var $panel = $(this).closest('.panel');
-    $('html,body').animate({
-      scrollTop: $panel.offset().top
-    }, 500);
-  });
+$('.panel-collapse').on('shown.bs.collapse', function () {
+  var $panel = $(this).closest('.panel');
+  $('html,body').animate({
+    scrollTop: $panel.offset().top
+  }, 500);
 });
 
 $(document).on('click', '[data-cancel-build-id]', function() {
