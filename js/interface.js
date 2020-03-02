@@ -981,7 +981,7 @@ $('.panel-collapse').on('shown.bs.collapse', function () {
     return;
   }
 
-  Fliplet.Studio.emit('scrollElementTo', $panel.offset().top);
+  Fliplet.Studio.emit('scrollOverlayTo', $panel.offset().top);
 });
 
 $(document).on('click', '[data-cancel-build-id]', function() {
