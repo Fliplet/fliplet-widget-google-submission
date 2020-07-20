@@ -506,7 +506,7 @@ function requestBuild(origin, submission) {
 }
 
 function saveAppStoreData(request) {
-  var data = appStoreSubmission.data;
+  var data = appStoreSubmission.data || {};
   var pushData = notificationSettings;
   var uploadFilePromise = Promise.resolve();
 
@@ -566,7 +566,7 @@ function saveAppStoreData(request) {
 }
 
 function saveEnterpriseData(request) {
-  var data = enterpriseSubmission.data;
+  var data = enterpriseSubmission.data || {};
   var uploadFilePromise = Promise.resolve();
 
   $('#enterpriseConfiguration [name]').each(function(idx, el) {
@@ -618,7 +618,7 @@ function saveEnterpriseData(request) {
 }
 
 function savePushData(silentSave) {
-  var data = notificationSettings;
+  var data = notificationSettings || {};
 
   $('#pushConfiguration [name]').each(function(i, el) {
     var name = $(el).attr("name");
