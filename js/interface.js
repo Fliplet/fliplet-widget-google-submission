@@ -506,6 +506,10 @@ function requestBuild(origin, submission) {
 }
 
 function saveAppStoreData(request) {
+  if (!organizationIsPaying) {
+    return;
+  }
+
   var data = appStoreSubmission.data || {};
   var pushData = notificationSettings;
   var uploadFilePromise = Promise.resolve();
@@ -566,6 +570,10 @@ function saveAppStoreData(request) {
 }
 
 function saveEnterpriseData(request) {
+  if (!organizationIsPaying) {
+    return;
+  }
+
   var data = enterpriseSubmission.data || {};
   var uploadFilePromise = Promise.resolve();
 
@@ -618,6 +626,10 @@ function saveEnterpriseData(request) {
 }
 
 function savePushData(silentSave) {
+  if (!organizationIsPaying) {
+    return;
+  }
+
   var data = notificationSettings || {};
 
   $('#pushConfiguration [name]').each(function(i, el) {
@@ -659,6 +671,10 @@ function savePushData(silentSave) {
 }
 
 function saveProgressOnClose () {
+  if (!organizationIsPaying) {
+    return;
+  }
+
   var savingFunctions = {
     "appstore-control": saveAppStoreData,
     "fliplet-signed-control": saveEnterpriseData
