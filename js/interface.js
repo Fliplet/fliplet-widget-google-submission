@@ -1281,16 +1281,16 @@ function getSubmissions() {
 
 function disableForm() {
   $(formInputSelectors.join(',')).prop('disabled', true);
-  $('[data-push-save]').addClass('disabled').prop('disabled', true);
-  $('[data-app-store-save]').addClass('disabled').prop('disabled', true);
-  $('[data-app-store-build]').addClass('disabled').prop('disabled', true);
+  $('[data-push-save], [data-app-store-save], [data-app-store-build]')
+    .addClass('disabled')
+    .prop('disabled', true);
 }
 
 function enableForm() {
   $(formInputSelectors.join(',')).prop('disabled', false);
-  $('[data-push-save]').removeClass('disabled').prop('disabled', false);
-  $('[data-app-store-save]').removeClass('disabled').prop('disabled', false);
-  $('[data-app-store-build]').removeClass('disabled').prop('disabled', false);
+  $('[data-push-save], [data-app-store-save], [data-app-store-build]')
+    .removeClass('disabled')
+    .prop('disabled', false);
 }
 
 function initialLoad(initial, timeout) {
