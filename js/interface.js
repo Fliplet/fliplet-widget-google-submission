@@ -1281,14 +1281,14 @@ function getSubmissions() {
 
 function disableForm() {
   $(formInputSelectors.join(',')).prop('disabled', true);
-  $('[data-push-save], [data-app-store-save], [data-app-store-build]')
+  $('[data-push-save], [data-app-store-save], [data-app-store-build], [change-bundleid]')
     .addClass('disabled')
     .prop('disabled', true);
 }
 
 function enableForm() {
   $(formInputSelectors.join(',')).prop('disabled', false);
-  $('[data-push-save], [data-app-store-save], [data-app-store-build]')
+  $('[data-push-save], [data-app-store-save], [data-app-store-build], [change-bundleid]')
     .removeClass('disabled')
     .prop('disabled', false);
 }
