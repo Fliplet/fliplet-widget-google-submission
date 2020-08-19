@@ -626,10 +626,6 @@ function saveEnterpriseData(request) {
 }
 
 function savePushData(silentSave) {
-  if (!organizationIsPaying) {
-    return;
-  }
-
   var data = notificationSettings || {};
 
   $('#pushConfiguration [name]').each(function(i, el) {
