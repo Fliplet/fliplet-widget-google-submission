@@ -511,11 +511,6 @@ function saveAppStoreData(request) {
     return;
   }
 
-  if (mustReviewTos) {
-    Fliplet.Studio.emit('onMustReviewTos');
-    return;
-  }
-
   var data = appStoreSubmission.data || {};
   var pushData = notificationSettings;
   var uploadFilePromise = Promise.resolve();
@@ -577,11 +572,6 @@ function saveAppStoreData(request) {
 
 function saveEnterpriseData(request) {
   if (!organizationIsPaying) {
-    return;
-  }
-
-  if (mustReviewTos) {
-    Fliplet.Studio.emit('onMustReviewTos');
     return;
   }
 
@@ -1055,6 +1045,11 @@ function publishApp(context) {
       changelog: 'Initial version'
     }
   };
+
+  if (mustReviewTos) {
+    Fliplet.Studio.emit('onMustReviewTos');
+    return;
+  }
 
   return Fliplet.API.request({
     method: 'POST',
