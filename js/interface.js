@@ -1,6 +1,7 @@
 var widgetId = Fliplet.Widget.getDefaultId();
 var widgetData = Fliplet.Widget.getData(widgetId) || {};
 var organizationIsPaying = widgetData.organizationIsPaying;
+var mustReviewTos = widgetData.mustReviewTos;
 var appName = '';
 var organizationName = '';
 var appIcon = '';
@@ -626,10 +627,6 @@ function saveEnterpriseData(request) {
 }
 
 function savePushData(silentSave) {
-  if (!organizationIsPaying) {
-    return;
-  }
-
   var data = notificationSettings || {};
 
   $('#pushConfiguration [name]').each(function(i, el) {
@@ -671,10 +668,6 @@ function savePushData(silentSave) {
 }
 
 function saveProgressOnClose () {
-  if (!organizationIsPaying) {
-    return;
-  }
-
   var savingFunctions = {
     "appstore-control": saveAppStoreData,
     "fliplet-signed-control": saveEnterpriseData
@@ -1052,6 +1045,11 @@ function publishApp(context) {
       changelog: 'Initial version'
     }
   };
+
+  if (mustReviewTos) {
+    Fliplet.Studio.emit('onMustReviewTos');
+    return;
+  }
 
   return Fliplet.API.request({
     method: 'POST',
