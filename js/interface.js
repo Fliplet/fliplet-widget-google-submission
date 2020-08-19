@@ -671,10 +671,6 @@ function savePushData(silentSave) {
 }
 
 function saveProgressOnClose () {
-  if (!organizationIsPaying) {
-    return;
-  }
-
   var savingFunctions = {
     "appstore-control": saveAppStoreData,
     "fliplet-signed-control": saveEnterpriseData
