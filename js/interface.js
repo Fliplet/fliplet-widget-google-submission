@@ -1,6 +1,7 @@
 var widgetId = Fliplet.Widget.getDefaultId();
 var widgetData = Fliplet.Widget.getData(widgetId) || {};
 var organizationIsPaying = widgetData.organizationIsPaying;
+var mustReviewTos = widgetData.mustReviewTos;
 var appName = '';
 var organizationName = '';
 var appIcon = '';
@@ -510,6 +511,11 @@ function saveAppStoreData(request) {
     return;
   }
 
+  if (mustReviewTos) {
+    Fliplet.Studio.emit('onMustReviewTos');
+    return;
+  }
+
   var data = appStoreSubmission.data || {};
   var pushData = notificationSettings;
   var uploadFilePromise = Promise.resolve();
@@ -571,6 +577,11 @@ function saveAppStoreData(request) {
 
 function saveEnterpriseData(request) {
   if (!organizationIsPaying) {
+    return;
+  }
+
+  if (mustReviewTos) {
+    Fliplet.Studio.emit('onMustReviewTos');
     return;
   }
 
