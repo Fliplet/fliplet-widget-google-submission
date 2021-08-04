@@ -1105,7 +1105,7 @@ function compileStatusTable(withData, origin, buildsData) {
 }
 
 function fileIsAPK(file) {
-  return file.contentType === 'application/vnd.android.package-archive';
+  return file.contentType === 'application/x-authorware-bin' || file.contentType === 'application/vnd.android.package-archive';
 }
 
 function checkSubmissionStatus(origin, googleSubmissions) {
