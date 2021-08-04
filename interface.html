@@ -486,8 +486,10 @@
           \{{#if completed}}
           <td class="app-build-progress success">
             <div class="app-build-progress-holder"><i class="fa fa-check-circle"></i> Completed</div>
+            \{{#if bundleUrl}}
+            <div class="download-bundle"><a href="\{{bundleUrl}}"><i class="fa fa-download"></i> Download App Bundle</a></div>\{{/if}}
             \{{#if fileUrl}}
-            <div class="download-build"><a href="\{{fileUrl}}"><i class="fa fa-download"></i> Download file</a></div>\{{/if}}
+            <div class="download-build"><a href="\{{fileUrl}}"><i class="fa fa-download"></i> Download APK</a></div>\{{/if}}
             \{{#if debugFileUrl}}
             <div class="download-build"><span class="label label-default">Admin</span> <a href="\{{debugFileUrl}}"><i class="fa fa-download"></i> Download debug app</a></div>\{{/if}}
           </td>

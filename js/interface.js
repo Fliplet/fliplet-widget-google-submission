@@ -1104,8 +1104,12 @@ function compileStatusTable(withData, origin, buildsData) {
   Fliplet.Widget.autosize();
 }
 
+function fileIsBundle(file) {
+  return file.contentType === 'application/x-authorware-bin';
+}
+
 function fileIsAPK(file) {
-  return file.contentType === 'application/x-authorware-bin' || file.contentType === 'application/vnd.android.package-archive';
+  return file.contentType === 'application/vnd.android.package-archive';
 }
 
 function checkSubmissionStatus(origin, googleSubmissions) {
@@ -1118,6 +1122,7 @@ function checkSubmissionStatus(origin, googleSubmissions) {
     submissionsToShow.forEach(function(submission) {
       var build = {};
       var appBuild;
+      var appBundle;
       var debugApp;
 
       // Default copy for testing status for different users
@@ -1136,6 +1141,9 @@ function checkSubmissionStatus(origin, googleSubmissions) {
       if (submission.result.appBuild && submission.result.appBuild.files) {
         appBuild = _.find(submission.result.appBuild.files, function(file) {
           return fileIsAPK(file);
+        });
+        appBundle = _.find(submission.result.appBuild.files, function(file) {
+          return fileIsBundle(file);
         });
       } else if (submission.data.previousResults && submission.data.previousResults.appBuild && submission.data.previousResults.appBuild.files) {
         appBuild = _.find(submission.data.previousResults.appBuild.files, function(file) {
@@ -1162,6 +1170,7 @@ function checkSubmissionStatus(origin, googleSubmissions) {
         '';
       build[submission.status] = true;
       build.fileUrl = appBuild ? appBuild.url : '';
+      build.bundleUrl = appBundle ? appBundle.url : '';
 
       if (userInfo && userInfo.user && (userInfo.user.isAdmin || userInfo.user.isImpersonating)) {
         build.debugFileUrl = debugApp ? debugApp.url : '';
