@@ -1142,12 +1142,15 @@ function checkSubmissionStatus(origin, googleSubmissions) {
         appBuild = _.find(submission.result.appBuild.files, function(file) {
           return fileIsAPK(file);
         });
-        appBundle = _.find(submission.result.appBuild.files, function(file) {
-          return fileIsBundle(file);
-        });
       } else if (submission.data.previousResults && submission.data.previousResults.appBuild && submission.data.previousResults.appBuild.files) {
         appBuild = _.find(submission.data.previousResults.appBuild.files, function(file) {
           return fileIsAPK(file);
+        });
+      }
+
+      if (submission.result.appBundle && submission.result.appBundle.files) {
+        appBundle = _.find(submission.result.appBundle.files, function(file) {
+          return fileIsBundle(file);
         });
       }
 
