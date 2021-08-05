@@ -383,6 +383,7 @@ h3 small {
 }
 
 .app-build-status table td.app-build-progress .download-build,
+.app-build-status table td.app-build-progress .download-bundle,
 .app-build-status table td.app-build-progress .cancel-build {
   font-size: 12px;
   margin-top: 5px;
