@@ -1125,6 +1125,8 @@ function publishApp(context) {
         break;
     }
   }).catch(function(err) {
+    $('.button-appStore-request, .button-enterprise-request').prop('disabled', false);
+
     Fliplet.Modal.alert({ message: Fliplet.parseError(err) });
 
     return Promise.reject(err);
@@ -1346,14 +1348,14 @@ function getSubmissions() {
 
 function disableForm() {
   $(formInputSelectors.join(',')).prop('disabled', true);
-  $('[data-push-save], [data-app-store-save], [data-app-store-build], [change-bundleid]')
+  $('[data-push-save], [data-app-store-save], [data-enterprise-save], [data-app-store-build], [change-bundleid]')
     .addClass('disabled')
     .prop('disabled', true);
 }
 
 function enableForm() {
   $(formInputSelectors.join(',')).prop('disabled', false);
-  $('[data-push-save], [data-app-store-save], [data-app-store-build], [change-bundleid]')
+  $('[data-push-save], [data-app-store-save], [data-enterprise-save], [data-app-store-build], [change-bundleid]')
     .removeClass('disabled')
     .prop('disabled', false);
 }
