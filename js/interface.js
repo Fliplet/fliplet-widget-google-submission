@@ -37,17 +37,11 @@ var formInputSelectors = [
 ];
 
 /* FUNCTIONS */
-String.prototype.toCamelCase = function() {
-  return this.replace(/^([A-Z])|[^A-Za-z]+(\w)/g, function(match, p1, p2, offset) {
-    if (p2) return p2.toUpperCase();
-    return p1.toLowerCase();
-  }).replace(/([^A-Z-a-z])/g, '').toLowerCase();
-};
 
-var createBundleID = function(orgName, appName) {
+var createBundleId = function(bundleId) {
   return $.ajax({
-    url: "https://itunes.apple.com/lookup?bundleId=com." + orgName + "." + appName,
-    dataType: "jsonp"
+    url: 'https://itunes.apple.com/lookup?bundleId=' + bundleId,
+    dataType: 'jsonp'
   });
 };
 
@@ -149,13 +143,15 @@ function loadAppStoreData() {
 
     /* ADD BUNDLE ID */
     if (name === "fl-store-bundleId" && typeof appStoreSubmission.data[name] === "undefined") {
-      createBundleID(organizationName.toCamelCase(), appName.toCamelCase()).then(function(response) {
+      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName);
+
+      createBundleId(bundleId).then(function(response) {
         if (response.resultCount === 0) {
-          $('.bundleId-store-text').html('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase());
-          $('[name="' + name + '"]').val('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase());
+          $('.bundleId-store-text').html(bundleId);
+          $('[name="' + name + '"]').val(bundleId);
         } else {
-          $('.bundleId-store-text').html('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase() + (response.resultCount + 1));
-          $('[name="' + name + '"]').val('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase() + (response.resultCount + 1));
+          $('.bundleId-store-text').html(bundleId + (response.resultCount + 1));
+          $('[name="' + name + '"]').val(bundleId + (response.resultCount + 1));
         }
       });
       return;
@@ -252,13 +248,15 @@ function loadEnterpriseData() {
 
     /* ADD BUNDLE ID */
     if (name === "fl-ent-bundleId" && typeof enterpriseSubmission.data[name] === "undefined") {
-      createBundleID(organizationName.toCamelCase(), appName.toCamelCase()).then(function(response) {
+      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName);
+
+      createBundleId(bundleId).then(function(response) {
         if (response.resultCount === 0) {
-          $('.bundleId-apk-text').html('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase());
-          $('[name="' + name + '"]').val('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase());
+          $('.bundleId-apk-text').html(bundleId);
+          $('[name="' + name + '"]').val(bundleId);
         } else {
-          $('.bundleId-apk-text').html('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase() + (response.resultCount + 1));
-          $('[name="' + name + '"]').val('com.' + organizationName.toCamelCase() + '.' + appName.toCamelCase() + (response.resultCount + 1));
+          $('.bundleId-apk-text').html(bundleId + (response.resultCount + 1));
+          $('[name="' + name + '"]').val(bundleId + (response.resultCount + 1));
         }
       });
       return;
