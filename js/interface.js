@@ -1102,6 +1102,10 @@ function compileStatusTable(withData, origin, buildsData) {
   Fliplet.Widget.autosize();
 }
 
+function fileIsBundle(file) {
+  return file.contentType === 'application/x-authorware-bin';
+}
+
 function fileIsAPK(file) {
   return file.contentType === 'application/vnd.android.package-archive';
 }
@@ -1116,6 +1120,7 @@ function checkSubmissionStatus(origin, googleSubmissions) {
     submissionsToShow.forEach(function(submission) {
       var build = {};
       var appBuild;
+      var appBundle;
       var debugApp;
 
       // Default copy for testing status for different users
@@ -1141,6 +1146,12 @@ function checkSubmissionStatus(origin, googleSubmissions) {
         });
       }
 
+      if (submission.result.appBundle && submission.result.appBundle.files) {
+        appBundle = _.find(submission.result.appBundle.files, function(file) {
+          return fileIsBundle(file);
+        });
+      }
+
       if (submission.result.debugApp && submission.result.debugApp.files) {
         debugApp = _.find(submission.result.debugApp.files, function(file) {
           return fileIsAPK(file);
@@ -1160,6 +1171,7 @@ function checkSubmissionStatus(origin, googleSubmissions) {
         '';
       build[submission.status] = true;
       build.fileUrl = appBuild ? appBuild.url : '';
+      build.bundleUrl = appBundle ? appBundle.url : '';
 
       if (userInfo && userInfo.user && (userInfo.user.isAdmin || userInfo.user.isImpersonating)) {
         build.debugFileUrl = debugApp ? debugApp.url : '';
