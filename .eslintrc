@@ -1,0 +1,4 @@
+{
+  "extends": "fliplet",
+  "root": true
+}
