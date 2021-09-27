@@ -53,6 +53,15 @@
   border-bottom-color: #000201;
 }
 
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  outline: none;
+}
+
 .app-status-panel.fl-green .fa {
   color: #1db188;
 }
