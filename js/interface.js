@@ -608,6 +608,12 @@ function saveAppStoreData(request) {
           helpLink: 'https://help.fliplet.com/app-settings/'
         }
       });
+
+      Fliplet.Studio.emit('track-event', {
+        category: 'app_billing',
+        action: 'open',
+        context: 'google_launch'
+      });
     }
 
     if (request && appStoreTypeAvailability.public) {
@@ -676,6 +682,12 @@ function saveEnterpriseData(request) {
           section: 'appBilling',
           helpLink: 'https://help.fliplet.com/app-settings/'
         }
+      });
+
+      Fliplet.Studio.emit('track-event', {
+        category: 'app_billing',
+        action: 'open',
+        context: 'google_launch'
       });
     }
 
@@ -970,6 +982,12 @@ $('#appStoreConfiguration').validator().on('submit', function(event) {
       }
     });
 
+    Fliplet.Studio.emit('track-event', {
+      category: 'app_billing',
+      action: 'open',
+      context: 'google_launch'
+    });
+
     return;
   }
 
@@ -1034,6 +1052,12 @@ $('#enterpriseConfiguration').validator().on('submit', function (event) {
         section: 'appBilling',
         helpLink: 'https://help.fliplet.com/app-settings/'
       }
+    });
+
+    Fliplet.Studio.emit('track-event', {
+      category: 'app_billing',
+      action: 'open',
+      context: 'google_launch'
     });
 
     return;
