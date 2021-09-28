@@ -1,6 +1,7 @@
 var widgetId = Fliplet.Widget.getDefaultId();
 var widgetData = Fliplet.Widget.getData(widgetId) || {};
-var appStoreTypeAvailability = widgetData.appStoreTypeAvailability;
+var storeFeatures = widgetData.appFeatures.hasOwnProperty('appStores')
+  && widgetData.appFeatures.appStores.google;
 var mustReviewTos = widgetData.mustReviewTos;
 var appName = '';
 var organizationName = '';
@@ -597,7 +598,7 @@ function saveAppStoreData(request) {
 
     savePushData(true);
 
-    if (!appStoreTypeAvailability.public) {
+    if (!storeFeatures.public) {
       Fliplet.Studio.emit('overlay', {
         name: 'app-settings',
         options: {
@@ -616,7 +617,7 @@ function saveAppStoreData(request) {
       });
     }
 
-    if (request && appStoreTypeAvailability.public) {
+    if (request && storeFeatures.public) {
       requestBuild('appStore', appStoreSubmission);
 
       return;
@@ -672,7 +673,7 @@ function saveEnterpriseData(request) {
 
     savePushData(true);
 
-    if (!appStoreTypeAvailability.private) {
+    if (!storeFeatures.private) {
       Fliplet.Studio.emit('overlay', {
         name: 'app-settings',
         options: {
@@ -691,7 +692,7 @@ function saveEnterpriseData(request) {
       });
     }
 
-    if (request && appStoreTypeAvailability.private) {
+    if (request && storeFeatures.private) {
       requestBuild('enterprise', enterpriseSubmission);
 
       return;
@@ -970,7 +971,7 @@ $('#appStoreConfiguration, #enterpriseConfiguration').on('validated.bs.validator
 });
 
 $('#appStoreConfiguration').validator().on('submit', function(event) {
-  if (!appStoreTypeAvailability.public) {
+  if (!storeFeatures.public) {
     Fliplet.Studio.emit('overlay', {
       name: 'app-settings',
       options: {
@@ -1042,7 +1043,7 @@ $('#appStoreConfiguration').validator().on('submit', function(event) {
 });
 
 $('#enterpriseConfiguration').validator().on('submit', function (event) {
-  if (!appStoreTypeAvailability.private) {
+  if (!storeFeatures.private) {
     Fliplet.Studio.emit('overlay', {
       name: 'app-settings',
       options: {
