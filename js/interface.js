@@ -598,27 +598,27 @@ function saveAppStoreData(request) {
 
     savePushData(true);
 
-    if (!storeFeatures.public) {
-      Fliplet.Studio.emit('overlay', {
-        name: 'app-settings',
-        options: {
-          size: 'large',
-          title: 'App Settings',
-          appId: Fliplet.Env.get('appId'),
-          section: 'appBilling',
-          helpLink: 'https://help.fliplet.com/app-settings/'
-        }
-      });
-
-      Fliplet.Studio.emit('track-event', {
-        category: 'app_billing',
-        action: 'open',
-        context: 'google_launch'
-      });
-    }
-
-    if (request && storeFeatures.public) {
-      requestBuild('appStore', appStoreSubmission);
+    if (request) {
+      if (!storeFeatures.public) {
+        Fliplet.Studio.emit('overlay', {
+          name: 'app-settings',
+          options: {
+            size: 'large',
+            title: 'App Settings',
+            appId: Fliplet.Env.get('appId'),
+            section: 'appBilling',
+            helpLink: 'https://help.fliplet.com/app-settings/'
+          }
+        });
+  
+        Fliplet.Studio.emit('track-event', {
+          category: 'app_billing',
+          action: 'open',
+          context: 'google_launch'
+        });
+      } else {
+        requestBuild('appStore', appStoreSubmission);
+      }
 
       return;
     }
@@ -673,27 +673,27 @@ function saveEnterpriseData(request) {
 
     savePushData(true);
 
-    if (!storeFeatures.private) {
-      Fliplet.Studio.emit('overlay', {
-        name: 'app-settings',
-        options: {
-          size: 'large',
-          title: 'App Settings',
-          appId: Fliplet.Env.get('appId'),
-          section: 'appBilling',
-          helpLink: 'https://help.fliplet.com/app-settings/'
-        }
-      });
-
-      Fliplet.Studio.emit('track-event', {
-        category: 'app_billing',
-        action: 'open',
-        context: 'google_launch'
-      });
-    }
-
-    if (request && storeFeatures.private) {
-      requestBuild('enterprise', enterpriseSubmission);
+    if (request) {
+      if (!storeFeatures.private) {
+        Fliplet.Studio.emit('overlay', {
+          name: 'app-settings',
+          options: {
+            size: 'large',
+            title: 'App Settings',
+            appId: Fliplet.Env.get('appId'),
+            section: 'appBilling',
+            helpLink: 'https://help.fliplet.com/app-settings/'
+          }
+        });
+  
+        Fliplet.Studio.emit('track-event', {
+          category: 'app_billing',
+          action: 'open',
+          context: 'google_launch'
+        });
+      } else {
+        requestBuild('enterprise', enterpriseSubmission);
+      }
 
       return;
     }
