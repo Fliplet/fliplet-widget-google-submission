@@ -616,14 +616,14 @@ function saveAppStoreData(request) {
           action: 'open',
           context: 'google_launch'
         });
-      } else {
-        requestBuild('appStore', appStoreSubmission);
-      }
 
-      return;
+        return;
+      } else {
+        return requestBuild('appStore', appStoreSubmission);
+      }
     }
     
-    save('appStore', appStoreSubmission);
+    return save('appStore', appStoreSubmission);
   });
 }
 
@@ -691,14 +691,14 @@ function saveEnterpriseData(request) {
           action: 'open',
           context: 'google_launch'
         });
-      } else {
-        requestBuild('enterprise', enterpriseSubmission);
-      }
 
-      return;
+        return;
+      } else {
+        return requestBuild('enterprise', enterpriseSubmission);
+      }
     }
 
-    save('enterprise', enterpriseSubmission);
+    return save('enterprise', enterpriseSubmission);
   });
 }
 
