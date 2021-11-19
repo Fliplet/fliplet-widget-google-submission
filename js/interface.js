@@ -974,8 +974,8 @@ $('#appStoreConfiguration, #enterpriseConfiguration').on('validated.bs.validator
 
 $('form').validator({
   custom: {
-    'version-number': function($el) {
-      var previosVersion = $el.data('version-number');
+    'validation-version-number': function($el) {
+      var previosVersion = $el.data('validation-version-number');
       var newVersion = $el.val();
       var versionRegExp = /^\d{1,}\.\d{1,}\.\d{1,}$/;
 
@@ -995,42 +995,42 @@ $('form').validator({
         }
 
         if (a < b) {
-          $el.attr('data-version-number-error', 'Please make sure the version number is higher than ' + $el.data('version-number'));
+          $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + $el.data('validation-version-number'));
 
           return true;
         }
       }
 
-      $el.attr('data-version-number-error', 'Please make sure the version number is higher than ' + $el.data('version-number'));
+      $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + $el.data('validation-version-number'));
 
       return true;
     },
-    'valid-version': function($el) {
+    'validation-version-number-type': function($el) {
       var newVersion = $el.val();
       var versionRegExp = /[^\d\.]/;
 
       if (versionRegExp.test(newVersion) && newVersion.length > 4) {
-        $el.attr('data-valid-version-error', 'Please make sure the app version is a number');
+        $el.attr('data-validation-version-number-type-error', 'Please make sure the app version is a number');
 
         return true;
       }
 
       return false;
     },
-    'valid-code': function($el) {
+    'validation-version-code': function($el) {
       var newCode = $el.val();
       var codeRegExp = /[^\d]/;
 
       if (codeRegExp.test(newCode)) {
-        $el.attr('data-valid-code-error', 'Please make sure the app version code is a number');
+        $el.attr('data-validation-version-code-error', 'Please make sure the app version code is a number');
 
         return true;
       }
 
       return false;
     },
-    'version-code': function($el) {
-      var previosVersionCode = $el.data('version-code');
+    'validation-version-code-type': function($el) {
+      var previosVersionCode = $el.data('validation-version-code-type');
       var newVersionCode = $el.val();
       var versionRegExp = /[^\d]/;
 
@@ -1043,12 +1043,12 @@ $('form').validator({
       }
 
       if (previosVersionCode > newVersionCode) {
-        $el.attr('data-version-code-error', 'Please make sure the version code is higher than ' + $el.data('version-code'));
+        $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + $el.data('validation-version-code-type'));
 
         return true;
       }
 
-      $el.attr('data-version-code-error', 'Please make sure the version code is higher than ' + $el.data('version-code'));
+      $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + $el.data('validation-version-code-type'));
 
       return true;
     }
