@@ -1043,12 +1043,12 @@ $('form').validator({
       }
 
       if (previosVersionCode > newVersionCode) {
-        $el.attr('data-version-code-error', 'Please make sure the version number is higher than ' + $el.data('version-code'));
+        $el.attr('data-version-code-error', 'Please make sure the version code is higher than ' + $el.data('version-code'));
 
         return true;
       }
 
-      $el.attr('data-version-code-error', 'Please make sure the version number is higher than ' + $el.data('version-code'));
+      $el.attr('data-version-code-error', 'Please make sure the version code is higher than ' + $el.data('version-code'));
 
       return true;
     }
