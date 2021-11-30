@@ -361,7 +361,7 @@
                   </div>
                   <div class="fl-bundleId-field">
                     <div class="col-sm-8">
-                      <input type="text" name="fl-ent-bundleId" class="form-control" id="fl-ent-bundleId" data-error="Please enter your Bundle ID" maxlength="155" required />
+                      <input type="text" name="fl-ent-bundleId" class="form-control" id="fl-ent-bundleId" pattern="^(?=.*[\.])[0-9a-zA-Z.-]{1,}$" data-error="Please make sure the bundle ID contains at least one period (.) and contains only alphanumeric characters (A–Z, a–z, and 0–9), hyphens (-), and periods (.)" data-required-error="Please enter the Bundle ID" maxlength="155" required />
                       <div class="help-block with-errors"></div>
                       <p class="help-block"><small>This value needs to be unique and the structure must be <code>com.<i>organizationName</i>.<i>appName</i></code>.</small></p>
                     </div>
