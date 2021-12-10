@@ -981,15 +981,15 @@ $('#appStoreConfiguration, #enterpriseConfiguration').on('validated.bs.validator
 $('form').validator({
   custom: {
     'validation-version-number': function($el) {
-      var previosVersion = $el.data('validation-version-number');
+      var oldVersion = $el.data('validation-version-number');
       var newVersion = $el.val();
       var versionRegExp = /^\d{1,}\.\d{1,}\.\d{1,}$/;
 
-      if (!previosVersion || !$el.val() || !versionRegExp.test(newVersion)) {
+      if (!oldVersion || !$el.val() || !versionRegExp.test(newVersion)) {
         return false;
       }
 
-      var segmentedOldVersion = previosVersion.split('.');
+      var segmentedOldVersion = oldVersion.split('.');
       var segmentedNewVersion = newVersion.split('.');
 
       for (var i = 0; i < segmentedNewVersion.length; i++) {
@@ -1001,13 +1001,13 @@ $('form').validator({
         }
 
         if (a < b) {
-          $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + $el.data('validation-version-number'));
+          $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + oldVersion);
 
           return true;
         }
       }
 
-      $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + $el.data('validation-version-number'));
+      $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + oldVersion);
 
       return true;
     },
@@ -1036,25 +1036,25 @@ $('form').validator({
       return false;
     },
     'validation-version-code-type': function($el) {
-      var previosVersionCode = $el.data('validation-version-code-type');
+      var oldVersionCode = $el.data('validation-version-code-type');
       var newVersionCode = $el.val();
       var versionRegExp = /[^\d]/;
 
-      if (!previosVersionCode || !$el.val() || versionRegExp.test(newVersionCode)) {
+      if (!oldVersionCode || !$el.val() || versionRegExp.test(newVersionCode)) {
         return false;
       }
 
-      if (previosVersionCode < newVersionCode) {
+      if (oldVersionCode < newVersionCode) {
         return false;
       }
 
-      if (previosVersionCode > newVersionCode) {
-        $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + $el.data('validation-version-code-type'));
+      if (oldVersionCode > newVersionCode) {
+        $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + oldVersionCode);
 
         return true;
       }
 
-      $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + $el.data('validation-version-code-type'));
+      $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + oldVersionCode);
 
       return true;
     }
