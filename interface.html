@@ -26,7 +26,7 @@
       </div>
       <h3><small>Step 1 - Let us build your app</small></h3>
       <p>Complete this section to let us build your app.</p>
-      <form data-disable="false" role="form" id="appStoreConfiguration">
+      <form data-toggle="validator" data-disable="false" role="form" id="appStoreConfiguration">
         <div class="panel-group" id="accordionAppStore" role="tablist" aria-multiselectable="true">
           <div class="panel panel-default app-details-appStore">
             <div class="panel-heading" role="tab" id="appStoreSettingsHeading">
@@ -100,9 +100,9 @@
                     <p class="help-block label-helper"><small>This is the version number of your app and will be displayed on the Google Play listing.</small></p>
                   </div>
                   <div class="col-sm-8">
-                    <input type="text" name="fl-store-versionNumber" class="form-control" id="fl-store-versionNumber" data-error="Please enter an app version number" required />
+                    <input type="text" name="fl-store-versionNumber" class="form-control" id="fl-store-versionNumber" pattern="^.{1,}\..{1,}\..{1,}$" data-error="Please enter a version number in the required format" data-required-error="Please enter an app version number" data-validation-version-number-type data-validation-version-number-type-error data-validation-version-number data-validation-version-number-error="Please make sure the version number is higher than 1.0.0" maxlength="155" required />
                     <div class="help-block with-errors"></div>
-                    <p class="help-block"><small>The recommended format for version number is <code>1.0.0</code>. With a maximum value of <code>99</code> per number.</small></p>
+                    <p class="help-block"><small>The required format for version number is <code>x.x.x</code>, where <code>x</code> is a number, e.g. <code>1.0.0</code>.</small></p>
                   </div>
                 </div>
                 <div class="form-group clearfix">
@@ -111,9 +111,9 @@
                     <p class="help-block label-helper"><small>This is the version code of your app.</small></p>
                   </div>
                   <div class="col-sm-8">
-                    <input type="text" name="fl-store-versionCode" class="form-control" id="fl-store-versionCode" data-error="Please enter an app version code" required />
+                    <input type="text" name="fl-store-versionCode" class="form-control" id="fl-store-versionCode" pattern="^\d{1,4}$" data-error="The version code must be a number without any decimals and higher than all existing version codes" data-validation-version-code data-validation-version-code-error data-required-error="Please enter an app version code" data-validation-version-code-type data-validation-version-code-type-error="Please make sure the version code is higher than 1000" required />
                     <div class="help-block with-errors"></div>
-                    <p class="help-block"><small>The recommended format for version code is <code>1000</code>. With maximum value of <code>9999</code>.</small></p>
+                    <p class="help-block"><small>The version code must be a number without any decimals and higher than all existing version codes.</small></p>
                   </div>
                 </div>
                 <div class="form-group clearfix">
@@ -334,9 +334,9 @@
                     <p class="help-block label-helper"><small>This is the version number of your app.</small></p>
                   </div>
                   <div class="col-sm-8">
-                    <input type="text" name="fl-ent-versionNumber" class="form-control" id="fl-ent-versionNumber" data-error="Please enter an app version number" required />
+                    <input type="text" name="fl-ent-versionNumber" class="form-control" id="fl-ent-versionNumber" pattern="^.{1,}\..{1,}\..{1,}$" data-error="Please enter a version number in the required format" data-required-error="Please enter an app version number" data-validation-version-number-type data-validation-version-number-type-error data-validation-version-number data-validation-version-number-error="Please make sure the version number is higher than 1.0.0" maxlength="155" required />
                     <div class="help-block with-errors"></div>
-                    <p class="help-block"><small>The recommended format for version number is <code>1.0.0</code>. With a maximum value of <code>99</code> per number.</small></p>
+                    <p class="help-block"><small>The required format for version number is <code>x.x.x</code>, where <code>x</code> is a number, e.g. <code>1.0.0</code>.</small></p>
                   </div>
                 </div>
                 <div class="form-group clearfix">
@@ -345,9 +345,9 @@
                     <p class="help-block label-helper"><small>This is the version code of your app.</small></p>
                   </div>
                   <div class="col-sm-8">
-                    <input type="text" name="fl-ent-versionCode" class="form-control" id="fl-ent-versionCode" data-error="Please enter an app version code" required />
+                    <input type="text" name="fl-ent-versionCode" class="form-control" id="fl-ent-versionCode" pattern="^\d{1,4}$" data-error="The version code must be a number without any decimals and higher than all existing version codes" data-validation-version-code data-validation-version-code-error data-required-error="Please enter an app version code" data-validation-version-code-type data-validation-version-code-type-error="Please make sure the version code is higher than 1000" required />
                     <div class="help-block with-errors"></div>
-                    <p class="help-block"><small>The recommended format for version code is <code>1000</code>. With maximum value of <code>9999</code>.</small></p>
+                    <p class="help-block"><small>The version code must be a number without any decimals and higher than all existing version codes.</small></p>
                   </div>
                 </div>
                 <div class="form-group clearfix">

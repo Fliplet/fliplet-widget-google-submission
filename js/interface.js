@@ -172,8 +172,10 @@ function loadAppStoreData() {
     if (name === 'fl-store-versionNumber') {
       if (typeof appStoreSubmission.data[name] !== 'undefined' && appStoreSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.data[name]);
+        $('[name="fl-store-versionNumber"]').data('validation-version-number', appStoreSubmission.data[name]);
       } else if (typeof appStoreSubmission.previousResults !== 'undefined' && typeof appStoreSubmission.previousResults.versionNumber !== 'undefined' && appStoreSubmission.previousResults.versionNumber !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.previousResults.versionNumber);
+        $('[name="fl-store-versionNumber"]').data('validation-version-number', appStoreSubmission.previousResults.versionNumber);
       } else {
         $('[name="' + name + '"]').val('1.0.0');
       }
@@ -184,8 +186,10 @@ function loadAppStoreData() {
     if (name === 'fl-store-versionCode') {
       if (typeof appStoreSubmission.data[name] !== 'undefined' && appStoreSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.data[name]);
+        $('[name="fl-store-versionCode"]').data('validation-version-code-type', appStoreSubmission.data[name]);
       } else if (typeof appStoreSubmission.previousResults !== 'undefined' && typeof appStoreSubmission.previousResults.versionCode !== 'undefined' && appStoreSubmission.previousResults.versionCode !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.previousResults.versionCode);
+        $('[name="fl-store-versionCode"]').data('validation-version-code-type', enterpriseSubmission.previousResults.versionCode);
       } else {
         $('[name="' + name + '"]').val('1000');
       }
@@ -303,8 +307,10 @@ function loadEnterpriseData() {
     if (name === 'fl-ent-versionNumber') {
       if (typeof enterpriseSubmission.data[name] !== 'undefined' && enterpriseSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.data[name]);
+        $('[name="fl-ent-versionNumber"]').data('validation-version-number', enterpriseSubmission.data[name]);
       } else if (typeof enterpriseSubmission.previousResults !== 'undefined' && typeof enterpriseSubmission.previousResults.versionNumber !== 'undefined' && enterpriseSubmission.previousResults.versionNumber !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.previousResults.versionNumber);
+        $('[name="fl-ent-versionNumber"]').data('validation-version-number', enterpriseSubmission.previousResults.versionNumber);
       } else {
         $('[name="' + name + '"]').val('1.0.0');
       }
@@ -315,8 +321,10 @@ function loadEnterpriseData() {
     if (name === 'fl-ent-versionCode') {
       if (typeof enterpriseSubmission.data[name] !== 'undefined' && enterpriseSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.data[name]);
+        $('[name="fl-ent-versionCode"]').data('validation-version-code-type', enterpriseSubmission.data[name]);
       } else if (typeof enterpriseSubmission.previousResults !== 'undefined' && typeof enterpriseSubmission.previousResults.versionCode !== 'undefined' && enterpriseSubmission.previousResults.versionCode !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.previousResults.versionCode);
+        $('[name="fl-ent-versionCode"]').data('validation-version-code-type', enterpriseSubmission.previousResults.versionCode);
       } else {
         $('[name="' + name + '"]').val('1000');
       }
@@ -968,6 +976,89 @@ $('[name="fl-store-type"]').on('change', function() {
 $('#appStoreConfiguration, #enterpriseConfiguration').on('validated.bs.validator', function() {
   checkGroupErrors();
   Fliplet.Widget.autosize();
+});
+
+$('form').validator({
+  custom: {
+    'validation-version-number': function($el) {
+      var oldVersion = $el.data('validation-version-number');
+      var newVersion = $el.val();
+      var versionRegExp = /^\d{1,}\.\d{1,}\.\d{1,}$/;
+
+      if (!oldVersion || !$el.val() || !versionRegExp.test(newVersion)) {
+        return false;
+      }
+
+      var segmentedOldVersion = oldVersion.split('.');
+      var segmentedNewVersion = newVersion.split('.');
+
+      for (var i = 0; i < segmentedNewVersion.length; i++) {
+        var a = parseInt(segmentedNewVersion[i], 10) || 0;
+        var b = parseInt(segmentedOldVersion[i], 10) || 0;
+
+        if (a > b) {
+          return false;
+        }
+
+        if (a < b) {
+          $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + oldVersion);
+
+          return true;
+        }
+      }
+
+      $el.attr('data-validation-version-number-error', 'Please make sure the version number is higher than ' + oldVersion);
+
+      return true;
+    },
+    'validation-version-number-type': function($el) {
+      var newVersion = $el.val();
+      var versionRegExp = /[^\d\.]/;
+
+      if (versionRegExp.test(newVersion) && newVersion.length > 4) {
+        $el.attr('data-validation-version-number-type-error', 'Please make sure the app version is a number');
+
+        return true;
+      }
+
+      return false;
+    },
+    'validation-version-code': function($el) {
+      var newCode = $el.val();
+      var codeRegExp = /[^\d]/;
+
+      if (codeRegExp.test(newCode)) {
+        $el.attr('data-validation-version-code-error', 'Please make sure the app version code is a number');
+
+        return true;
+      }
+
+      return false;
+    },
+    'validation-version-code-type': function($el) {
+      var oldVersionCode = $el.data('validation-version-code-type');
+      var newVersionCode = $el.val();
+      var versionRegExp = /[^\d]/;
+
+      if (!oldVersionCode || !$el.val() || versionRegExp.test(newVersionCode)) {
+        return false;
+      }
+
+      if (oldVersionCode < newVersionCode) {
+        return false;
+      }
+
+      if (oldVersionCode > newVersionCode) {
+        $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + oldVersionCode);
+
+        return true;
+      }
+
+      $el.attr('data-validation-version-code-type-error', 'Please make sure the version code is higher than ' + oldVersionCode);
+
+      return true;
+    }
+  }
 });
 
 $('#appStoreConfiguration').validator().on('submit', function(event) {
