@@ -69,6 +69,11 @@
   border-color: #a94442;
 }
 
+.setting-app-icon.default.has-error,
+.setting-splash-screen.default.has-error {
+  border-color: #a94442;
+}
+
 .panel.required-fill {
   -webkit-box-shadow: 0 1px 1px rgba(169, 68, 66, 0.30);
   box-shadow: 0 1px 1px rgba(169, 68, 66, 0.30);
