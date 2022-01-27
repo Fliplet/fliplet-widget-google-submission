@@ -808,12 +808,12 @@ function checkGroupErrors() {
   });
 }
 
-function hideErrors(imageSelector, errorSelector) {
+function hideError(imageSelector, errorSelector) {
   imageSelector.removeClass('has-error');
   errorSelector.addClass('hidden');
 }
 
-function showErrors(imageSelector, errorSelector) {
+function showError(imageSelector, errorSelector) {
   imageSelector.addClass('has-error');
   errorSelector.removeClass('hidden');
 }
@@ -826,11 +826,11 @@ function validateImageUrl(url, imageSelector, errorSelector) {
     img.onerror = reject;
     img.src = url;
   }).then(function() {
-    hideErrors(imageSelector, errorSelector);
+    hideError(imageSelector, errorSelector);
 
     return;
   }).catch(function() {
-    showErrors(imageSelector, errorSelector);
+    showError(imageSelector, errorSelector);
   });
 }
 
@@ -1114,8 +1114,7 @@ $('#appStoreConfiguration').validator().on('submit', function(event) {
   if (appSettings.splashScreen) {
     validateImageUrl(appSettings.splashScreen.url, $('.app-splash-screen'), $('.splash-details-error'));
   } else {
-    $('.setting-splash-screen.default, .app-splash-screen').addClass('has-error');
-    $('.splash-details-error').removeClass('hidden');
+    showError($('.setting-splash-screen.default, .app-splash-screen'), $('.splash-details-error'));
   }
 
   if (event.isDefaultPrevented()) {
@@ -1195,8 +1194,7 @@ $('#enterpriseConfiguration').validator().on('submit', function (event) {
   if (appSettings.splashScreen) {
     validateImageUrl(appSettings.splashScreen.url, $('.app-splash-screen'), $('.splash-details-error'));
   } else {
-    $('.setting-splash-screen.default, .app-splash-screen').addClass('has-error');
-    $('.splash-details-error').removeClass('hidden');
+    showError($('.setting-splash-screen.default, .app-splash-screen'), $('.splash-details-error'));
   }
 
   if (event.isDefaultPrevented()) {
