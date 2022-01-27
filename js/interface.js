@@ -808,9 +808,14 @@ function checkGroupErrors() {
   });
 }
 
-function removeImageErrors(imageSelector, errorSelector) {
+function hideErrors(imageSelector, errorSelector) {
   imageSelector.removeClass('has-error');
   errorSelector.addClass('hidden');
+}
+
+function showErrors(imageSelector, errorSelector) {
+  imageSelector.addClass('has-error');
+  errorSelector.removeClass('hidden');
 }
 
 function validateImageUrl(url, imageSelector, errorSelector) {
@@ -821,12 +826,11 @@ function validateImageUrl(url, imageSelector, errorSelector) {
     img.onerror = reject;
     img.src = url;
   }).then(function() {
-    removeImageErrors(imageSelector, errorSelector);
+    hideErrors(imageSelector, errorSelector);
 
     return;
   }).catch(function() {
-    imageSelector.addClass('has-error');
-    errorSelector.removeClass('hidden');
+    showErrors(imageSelector, errorSelector);
   });
 }
 
