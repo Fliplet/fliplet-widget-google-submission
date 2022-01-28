@@ -1109,12 +1109,12 @@ $('#appStoreConfiguration').validator().on('submit', function(event) {
     return;
   }
 
-  validateImageUrl(appIcon, $('.setting-app-icon.default'), $('.image-details-error'));
+  validateImageUrl(appIcon, $('.fl-sb-appStore .setting-app-icon.default'), $('.fl-sb-appStore .image-details-error'));
 
   if (appSettings.splashScreen) {
-    validateImageUrl(appSettings.splashScreen.url, $('.app-splash-screen'), $('.splash-details-error'));
+    validateImageUrl(appSettings.splashScreen.url, $('.fl-sb-appStore .app-splash-screen'), $('.fl-sb-appStore .splash-details-error'));
   } else {
-    showError($('.setting-splash-screen.default, .app-splash-screen'), $('.splash-details-error'));
+    showError($('.fl-sb-appStore .setting-splash-screen.default, .fl-sb-appStore .app-splash-screen'), $('.fl-sb-appStore .splash-details-error'));
   }
 
   if (event.isDefaultPrevented()) {
@@ -1189,12 +1189,12 @@ $('#enterpriseConfiguration').validator().on('submit', function (event) {
     return;
   }
 
-  validateImageUrl(appIcon, $('.setting-app-icon.default'), $('.image-details-error'));
+  validateImageUrl(appIcon, $('.fl-sb-fliplet-signed .setting-app-icon.default'), $('.fl-sb-fliplet-signed .image-details-error'));
 
   if (appSettings.splashScreen) {
-    validateImageUrl(appSettings.splashScreen.url, $('.app-splash-screen'), $('.splash-details-error'));
+    validateImageUrl(appSettings.splashScreen.url, $('.fl-sb-fliplet-signed .app-splash-screen'), $('.fl-sb-fliplet-signed .splash-details-error'));
   } else {
-    showError($('.setting-splash-screen.default, .app-splash-screen'), $('.splash-details-error'));
+    showError($('.fl-sb-fliplet-signed .setting-splash-screen.default, .fl-sb-fliplet-signed .app-splash-screen'), $('.fl-sb-fliplet-signed .splash-details-error'));
   }
 
   if (event.isDefaultPrevented()) {
