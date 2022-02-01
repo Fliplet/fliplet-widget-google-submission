@@ -808,6 +808,32 @@ function checkGroupErrors() {
   });
 }
 
+function hideError(imageSelector, errorSelector) {
+  imageSelector.removeClass('has-error');
+  errorSelector.addClass('hidden');
+}
+
+function showError(imageSelector, errorSelector) {
+  imageSelector.addClass('has-error');
+  errorSelector.removeClass('hidden');
+}
+
+function validateImageUrl(url, imageSelector, errorSelector) {
+  return new Promise(function(resolve, reject) {
+    var img = document.createElement('img');
+
+    img.onload = resolve;
+    img.onerror = reject;
+    img.src = url;
+  }).then(function() {
+    hideError(imageSelector, errorSelector);
+
+    return;
+  }).catch(function() {
+    showError(imageSelector, errorSelector);
+  });
+}
+
 /* ATTACH LISTENERS */
 
 $('[data-toggle="tooltip"]').tooltip({
@@ -1083,6 +1109,20 @@ $('#appStoreConfiguration').validator().on('submit', function(event) {
     return;
   }
 
+  validateImageUrl(appIcon, $('.fl-sb-appStore .setting-app-icon.default'), $('.fl-sb-appStore .image-details-error'));
+
+  var defaultSplashScreenData = {
+    'url': $('[data-' + appStoreSubmission.data.submissionType.toLowerCase() + '-default-splash-url]').data(appStoreSubmission.data.submissionType.toLowerCase() + '-default-splash-url')
+  };
+
+  if (appSettings.splashScreen) {
+    validateImageUrl(appSettings.splashScreen.url, $('.fl-sb-unsigned .app-splash-screen'), $('.fl-sb-unsigned .splash-details-error'));
+  }
+
+  if (defaultSplashScreenData.url) {
+    validateImageUrl(defaultSplashScreenData.url, $('.fl-sb-unsigned .app-splash-screen'), $('.fl-sb-unsigned .splash-details-error'));
+  }
+
   if (event.isDefaultPrevented()) {
     // Gives time to Validator to apply classes
     setTimeout(checkGroupErrors, 0);
@@ -1153,6 +1193,20 @@ $('#enterpriseConfiguration').validator().on('submit', function (event) {
     });
 
     return;
+  }
+
+  validateImageUrl(appIcon, $('.fl-sb-fliplet-signed .setting-app-icon.default'), $('.fl-sb-fliplet-signed .image-details-error'));
+
+  var defaultSplashScreenData = {
+    'url': $('[data-' + enterpriseSubmission.data.submissionType.toLowerCase() + '-default-splash-url]').data(enterpriseSubmission.data.submissionType.toLowerCase() + '-default-splash-url')
+  };
+
+  if (appSettings.splashScreen) {
+    validateImageUrl(appSettings.splashScreen.url, $('.fl-sb-unsigned .app-splash-screen'), $('.fl-sb-unsigned .splash-details-error'));
+  }
+
+  if (defaultSplashScreenData.url) {
+    validateImageUrl(defaultSplashScreenData.url, $('.fl-sb-unsigned .app-splash-screen'), $('.fl-sb-unsigned .splash-details-error'));
   }
 
   if (event.isDefaultPrevented()) {
