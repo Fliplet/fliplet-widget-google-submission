@@ -1009,7 +1009,7 @@ $('form').validator({
     'validation-version-number': function($el) {
       var oldVersion = $el.data('validation-version-number');
       var newVersion = $el.val();
-      var versionRegExp = /^\d{1,}\.\d{1,}\.\d{1,}$/;
+      var versionRegExp = /^\d+\.\d+\.\d+$/;
 
       if (!oldVersion || !$el.val() || !versionRegExp.test(newVersion)) {
         return false;
