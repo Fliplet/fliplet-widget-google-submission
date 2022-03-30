@@ -618,7 +618,7 @@ function saveAppStoreData(request) {
             helpLink: 'https://help.fliplet.com/app-settings/'
           }
         });
-  
+
         Fliplet.Studio.emit('track-event', {
           category: 'app_billing',
           action: 'open',
@@ -626,11 +626,11 @@ function saveAppStoreData(request) {
         });
 
         return;
-      } else {
-        return requestBuild('appStore', appStoreSubmission);
       }
+
+      return requestBuild('appStore', appStoreSubmission);
     }
-    
+
     return save('appStore', appStoreSubmission);
   });
 }
@@ -693,7 +693,7 @@ function saveEnterpriseData(request) {
             helpLink: 'https://help.fliplet.com/app-settings/'
           }
         });
-  
+
         Fliplet.Studio.emit('track-event', {
           category: 'app_billing',
           action: 'open',
@@ -701,9 +701,9 @@ function saveEnterpriseData(request) {
         });
 
         return;
-      } else {
-        return requestBuild('enterprise', enterpriseSubmission);
       }
+
+      return requestBuild('enterprise', enterpriseSubmission);
     }
 
     return save('enterprise', enterpriseSubmission);
@@ -1051,7 +1051,7 @@ $('form').validator({
     },
     'validation-version-code': function($el) {
       var newCode = $el.val();
-      var codeRegExp = /[^\d]/;
+      var codeRegExp = /^\d+$/;
 
       if (codeRegExp.test(newCode)) {
         $el.attr('data-validation-version-code-error', 'Please make sure the app version code is a number');
@@ -1064,11 +1064,14 @@ $('form').validator({
     'validation-version-code-type': function($el) {
       var oldVersionCode = $el.data('validation-version-code-type');
       var newVersionCode = $el.val();
-      var versionRegExp = /[^\d]/;
+      var versionRegExp = /^\d+$/;
 
       if (!oldVersionCode || !$el.val() || versionRegExp.test(newVersionCode)) {
         return false;
       }
+
+      oldVersionCode = parseInt(oldVersionCode, 10);
+      newVersionCode = parseInt(newVersionCode, 10);
 
       if (oldVersionCode < newVersionCode) {
         return false;
@@ -1173,7 +1176,7 @@ $('#appStoreConfiguration').validator().on('submit', function(event) {
   setTimeout(checkGroupErrors, 0);
 });
 
-$('#enterpriseConfiguration').validator().on('submit', function (event) {
+$('#enterpriseConfiguration').validator().on('submit', function(event) {
   if (!storeFeatures.private) {
     Fliplet.Studio.emit('overlay', {
       name: 'app-settings',
