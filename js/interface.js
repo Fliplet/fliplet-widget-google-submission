@@ -1053,7 +1053,7 @@ $('form').validator({
       var newCode = $el.val();
       var codeRegExp = /^\d+$/;
 
-      if (codeRegExp.test(newCode)) {
+      if (!codeRegExp.test(newCode)) {
         $el.attr('data-validation-version-code-error', 'Please make sure the app version code is a number');
 
         return true;
