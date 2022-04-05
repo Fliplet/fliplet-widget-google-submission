@@ -185,7 +185,6 @@ function loadAppStoreData() {
     if (name === 'fl-store-versionCode') {
       if (typeof appStoreSubmission.data[name] !== 'undefined' && appStoreSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.data[name]);
-        $('[name="fl-store-versionCode"]').data('validation-version-code-type', appStoreSubmission.data[name]);
       } else if (typeof appStoreSubmission.previousResults !== 'undefined' && typeof appStoreSubmission.previousResults.versionCode !== 'undefined' && appStoreSubmission.previousResults.versionCode !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.previousResults.versionCode);
         $('[name="fl-store-versionCode"]').data('validation-version-code-type', enterpriseSubmission.previousResults.versionCode);
@@ -319,7 +318,6 @@ function loadEnterpriseData() {
     if (name === 'fl-ent-versionCode') {
       if (typeof enterpriseSubmission.data[name] !== 'undefined' && enterpriseSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.data[name]);
-        $('[name="fl-ent-versionCode"]').data('validation-version-code-type', enterpriseSubmission.data[name]);
       } else if (typeof enterpriseSubmission.previousResults !== 'undefined' && typeof enterpriseSubmission.previousResults.versionCode !== 'undefined' && enterpriseSubmission.previousResults.versionCode !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.previousResults.versionCode);
         $('[name="fl-ent-versionCode"]').data('validation-version-code-type', enterpriseSubmission.previousResults.versionCode);
