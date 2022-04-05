@@ -172,7 +172,6 @@ function loadAppStoreData() {
     if (name === 'fl-store-versionNumber') {
       if (typeof appStoreSubmission.data[name] !== 'undefined' && appStoreSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.data[name]);
-        $('[name="fl-store-versionNumber"]').data('validation-version-number', appStoreSubmission.data[name]);
       } else if (typeof appStoreSubmission.previousResults !== 'undefined' && typeof appStoreSubmission.previousResults.versionNumber !== 'undefined' && appStoreSubmission.previousResults.versionNumber !== '') {
         $('[name="' + name + '"]').val(appStoreSubmission.previousResults.versionNumber);
         $('[name="fl-store-versionNumber"]').data('validation-version-number', appStoreSubmission.previousResults.versionNumber);
@@ -307,7 +306,6 @@ function loadEnterpriseData() {
     if (name === 'fl-ent-versionNumber') {
       if (typeof enterpriseSubmission.data[name] !== 'undefined' && enterpriseSubmission.data[name] !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.data[name]);
-        $('[name="fl-ent-versionNumber"]').data('validation-version-number', enterpriseSubmission.data[name]);
       } else if (typeof enterpriseSubmission.previousResults !== 'undefined' && typeof enterpriseSubmission.previousResults.versionNumber !== 'undefined' && enterpriseSubmission.previousResults.versionNumber !== '') {
         $('[name="' + name + '"]').val(enterpriseSubmission.previousResults.versionNumber);
         $('[name="fl-ent-versionNumber"]').data('validation-version-number', enterpriseSubmission.previousResults.versionNumber);
