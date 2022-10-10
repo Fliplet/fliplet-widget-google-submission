@@ -1448,11 +1448,11 @@ function checkSubmissionStatus(origin, googleSubmissions) {
         moment(submission.submittedAt).format('MMM Do YYYY, h:mm:ss a') :
         '';
       build[submission.status] = true;
-      build.fileUrl = appBuild ? appBuild.url : '';
-      build.bundleUrl = appBundle ? appBundle.url : '';
+      build.fileUrl = appBuild ? removeAuthTokenFromFileUrl(appBuild.url) : '';
+      build.bundleUrl = appBundle ? removeAuthTokenFromFileUrl(appBundle.url) : '';
 
       if (userInfo && userInfo.user && (userInfo.user.isAdmin || userInfo.user.isImpersonating)) {
-        build.debugFileUrl = debugApp ? debugApp.url : '';
+        build.debugFileUrl = debugApp ? removeAuthTokenFromFileUrl(debugApp.url) : '';
       }
 
       buildsData.push(build);
@@ -1719,6 +1719,16 @@ function initialLoad(initial, timeout) {
         initialLoad(false, 5000);
       });
   }
+}
+
+function removeAuthTokenFromFileUrl(url) {
+  var tokenFound = url.match(/auth_token=([A-z0-9-]+)/);
+
+  if (tokenFound) {
+    return url.replace(tokenFound[0], '');
+  }
+
+  return url;
 }
 
 // Start
