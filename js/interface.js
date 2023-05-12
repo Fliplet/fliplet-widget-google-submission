@@ -1346,6 +1346,7 @@ function publishApp(context) {
         break;
     }
   }).catch(function(err) {
+    $('.button-appStore-request, .button-enterprise-request').html('Request App <i class="fa fa-paper-plane"></i>');
     $('.button-appStore-request, .button-enterprise-request').prop('disabled', false);
 
     Fliplet.Modal.alert({ message: Fliplet.parseError(err) });
