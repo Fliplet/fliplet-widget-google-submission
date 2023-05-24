@@ -422,8 +422,10 @@ function submissionBuild(appSubmission, origin) {
     $('.button-' + origin + '-request').html('Request App <i class="fa fa-paper-plane"></i>');
     $('.button-' + origin + '-request').prop('disabled', false);
     
-    if (err.responseJSON.type && err.responseJSON.type.indexOf('billing.enforcement') > -1) {
-      Fliplet.Studio.emit('show-enforcement-warning', err.responseJSON);
+    var errorJSON = err && err.responseJSON || {};
+
+    if (errorJSON.type && errorJSON.type.indexOf('billing.enforcement') > -1) {
+      Fliplet.Studio.emit('show-enforcement-warning', errorJSON);
     } else {
       Fliplet.Modal.alert({
         message: Fliplet.parseError(err)
