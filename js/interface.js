@@ -421,9 +421,14 @@ function submissionBuild(appSubmission, origin) {
   }, function(err) {
     $('.button-' + origin + '-request').html('Request App <i class="fa fa-paper-plane"></i>');
     $('.button-' + origin + '-request').prop('disabled', false);
-    Fliplet.Modal.alert({
-      message: Fliplet.parseError(err)
-    });
+    
+    if (err.responseJSON.type && err.responseJSON.type.indexOf('billing.enforcement') > -1) {
+      Fliplet.Studio.emit('show-enforcement-warning', err.responseJSON);
+    } else {
+      Fliplet.Modal.alert({
+        message: Fliplet.parseError(err)
+      });
+    }
   });
 }
 
