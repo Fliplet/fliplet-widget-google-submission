@@ -421,6 +421,11 @@ function submissionBuild(appSubmission, origin) {
   }, function(err) {
     $('.button-' + origin + '-request').html('Request App <i class="fa fa-paper-plane"></i>');
     $('.button-' + origin + '-request').prop('disabled', false);
+
+    if (err.responseJSON  && err.responseJSON.handled) {
+      return;
+    }
+
     Fliplet.Modal.alert({
       message: Fliplet.parseError(err)
     });
