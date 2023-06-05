@@ -422,7 +422,7 @@ function submissionBuild(appSubmission, origin) {
     $('.button-' + origin + '-request').html('Request App <i class="fa fa-paper-plane"></i>');
     $('.button-' + origin + '-request').prop('disabled', false);
 
-    if (err.responseJSON  && err.responseJSON.handled) {
+    if (Fliplet.Error.isHandled(err)) {
       return;
     }
 
