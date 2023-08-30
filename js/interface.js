@@ -1489,7 +1489,7 @@ function submissionChecker(submissions) {
     return el.id;
   });
 
-  previousAppStoreSubmission = _.minBy(completedSubs, function(el) {
+  previousAppStoreSubmission = _.maxBy(completedSubs, function(el) {
     return el.id;
   });
 
@@ -1511,7 +1511,7 @@ function submissionChecker(submissions) {
     return el.id;
   });
 
-  previousEnterpriseSubmission = _.minBy(completedEnterpriseSubs, function(el) {
+  previousEnterpriseSubmission = _.maxBy(completedEnterpriseSubs, function(el) {
     return el.id;
   });
 
