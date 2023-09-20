@@ -1399,6 +1399,10 @@ function checkSubmissionStatus(origin, googleSubmissions) {
   });
 
   var buildsData = [];
+  var submissionTypePrefixes = {
+    appStore: 'fl-store-',
+    enterprise: 'fl-ent-'
+  };
 
   if (submissionsToShow.length) {
     submissionsToShow.forEach(function(submission) {
@@ -1406,6 +1410,7 @@ function checkSubmissionStatus(origin, googleSubmissions) {
       var appBuild;
       var appBundle;
       var debugApp;
+      var submissionType = _.get(submission, 'data.submissionType');
 
       // Default copy for testing status for different users
       if (submission.status === 'ready-for-testing') {
@@ -1456,6 +1461,8 @@ function checkSubmissionStatus(origin, googleSubmissions) {
       build[submission.status] = true;
       build.fileUrl = appBuild ? removeAuthTokenFromFileUrl(appBuild.url) : '';
       build.bundleUrl = appBundle ? removeAuthTokenFromFileUrl(appBundle.url) : '';
+      build.versionCode = _.get(submission, ['data', submissionTypePrefixes[submissionType] + 'versionCode']);
+      build.versionNumber = _.get(submission, ['data', submissionTypePrefixes[submissionType] + 'versionNumber']);
 
       if (userInfo && userInfo.user && (userInfo.user.isAdmin || userInfo.user.isImpersonating)) {
         build.debugFileUrl = debugApp ? removeAuthTokenFromFileUrl(debugApp.url) : '';
