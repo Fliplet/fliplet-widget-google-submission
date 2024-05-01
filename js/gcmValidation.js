@@ -2,69 +2,90 @@ const gcmServerKeyInput = document.getElementById('fl-push-serverKey');
 const gcmSenderIdInput = document.getElementById('fl-push-senderId');
 const gcmProjectIdInput = document.getElementById('fl-push-projectId');
 const gcmTestButton = document.getElementById('fl-push-testConfigButton');
+const gcmTestResultMessage = document.getElementById('fl-push-testResultMessage');
 
-const gcmTestSuccessMessage = document.getElementById('fl-push-testSuccessMessage');
-const gcmTestErrorMessage = document.getElementById('fl-push-testErrorMessage');
+const MESSAGE = {
+  SUCCESS: 'Success! Push notifications have been configured correctly.',
+  SERVER_ERROR: 'Error - notifications have not been configured correctly. Please review <a href="https://help.fliplet.com" target="_blank">https://help.fliplet.com</a> or contact support.',
+  INVALID_SENDER_ID: 'Error - notifications have not been configured correctly. Please check if your Firebase sender ID is entered correctly and try again.',
+  INVALID_SERVER_KEY: 'Error - notifications have not been configured correctly. Please check if your Firebase server key is entered correctly and try again.',
+  FIREBASE_ERROR: 'Error - There is currently an issue relating to Firebase services. Please try again later.',
+};
 
-const  validateGcmServerKey = async(gcmServerKey) => {
+const messageCodesMap = {
+    InvalidRegistration: MESSAGE.SUCCESS,
+    MissingRegistration: MESSAGE.SERVER_ERROR,
+    MismatchSenderId: MESSAGE.INVALID_SENDER_ID,
+    NotRegistered: MESSAGE.SUCCESS,
+    MessageTooBig: MESSAGE.SERVER_ERROR,
+    InvalidDataKey: MESSAGE.SERVER_ERROR,
+    InvalidTtl: MESSAGE.SERVER_ERROR,
+    InternalServerError: MESSAGE.FIREBASE_ERROR,
+    Unavailable: MESSAGE.FIREBASE_ERROR,
+    DeviceMessageRateExceeded: MESSAGE.FIREBASE_ERROR,
+};
+
+const renderResultMessage = (resultMessage) => {
+  if (!resultMessage) {
+    gcmTestResultMessage.style.display = 'none';
+    gcmTestResultMessage.innerHTML = '';
+
+    return;
+  };
+
+  gcmTestResultMessage.style.display = 'block';
+  gcmTestResultMessage.innerHTML = resultMessage;
+
+  const success = resultMessage === MESSAGE.SUCCESS;
+  gcmTestResultMessage.classList.toggle('text-success', success);
+  gcmTestResultMessage.classList.toggle('text-danger', !success);
+};
+
+const validateGcmServerKey = async(gcmServerKey) => {
   try {
-    const response = await fetch(
-      'https://fcm.googleapis.com/fcm/send',
+    const response = await fetch('https://fcm.googleapis.com/fcm/send',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `key=${gcmServerKey}`
-        },
-        body: JSON.stringify({
-          registration_ids: ['fake_device token'] // Use a non-real token
-        })
+        headers: { Authorization: `key=${gcmServerKey}` },
+        body: JSON.stringify({ registration_ids: ['fake_device token'] }) // Use a fake device token to test the server key
       }
     );
 
-    if (!response.ok) {
-      if (response.status === 401) {
-        throw new Error('Invalid GCM Server Key');
-      }
+    if (response.status === 401) {
+      return MESSAGE.INVALID_SERVER_KEY;
+    };
 
-      throw new Error(`Sending failed with status: ${response.status}`);
+    const { results: { 0: errorMessageCode }} = await response.json();
+
+    const message = messageCodesMap[errorMessageCode];
+
+    if (!message) {
+      throw new Error('Unknown error code');
     }
 
-    return true;
+    return message;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Failed to send message:', error);
 
-    return false;
+    return MESSAGE.SERVER_ERROR;
   }
-};
-
-const hideGcmTestMessages = () => {
-  gcmTestErrorMessage.style.display = 'none';
-  gcmTestSuccessMessage.style.display = 'none';
 };
 
 gcmTestButton.addEventListener('click', async() => {
-  hideGcmTestMessages();
+  renderResultMessage(null);
 
   const gcmServerKey = gcmServerKeyInput.value;
-  const isValid = await validateGcmServerKey(gcmServerKey);
+  const resultMessage = await validateGcmServerKey(gcmServerKey);
 
-  if (!isValid) {
-    gcmTestErrorMessage.style.display = 'block';
-
-    return;
-  }
-
-  gcmTestSuccessMessage.style.display = 'block';
+  renderResultMessage(resultMessage);
 });
 
 const toggleGcmTestButton = () => {
-  hideGcmTestMessages();
+  renderResultMessage(null);
   gcmTestButton.disabled = !gcmServerKeyInput.value.length || !gcmSenderIdInput.value.length || !gcmProjectIdInput.value.length;
 };
 
-gcmServerKeyInput.addEventListener('input', toggleGcmTestButton);
-gcmSenderIdInput.addEventListener('input', toggleGcmTestButton);
-gcmProjectIdInput.addEventListener('input', toggleGcmTestButton);
+[ gcmServerKeyInput, gcmSenderIdInput, gcmProjectIdInput ].forEach(input => input.addEventListener('input', toggleGcmTestButton));
+
 toggleGcmTestButton();

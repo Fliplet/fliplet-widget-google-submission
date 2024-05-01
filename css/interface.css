@@ -519,8 +519,7 @@ h3 small {
   width: 9rem;
 }
 
-#fl-push-testSuccessMessage,
-#fl-push-testErrorMessage {
+#fl-push-testResultMessage {
   padding: 10px 0;
   display: none;
 }
