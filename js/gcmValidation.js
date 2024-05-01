@@ -22,7 +22,7 @@ const messageCodesMap = {
   InvalidTtl: MESSAGE.SERVER_ERROR,
   InternalServerError: MESSAGE.FIREBASE_ERROR,
   Unavailable: MESSAGE.FIREBASE_ERROR,
-  DeviceMessageRateExceeded: MESSAGE.FIREBASE_ERROR,
+  DeviceMessageRateExceeded: MESSAGE.FIREBASE_ERROR
 };
 
 const renderResultMessage = (resultMessage) => {
@@ -57,14 +57,14 @@ const validateGcmServerKey = async(gcmServerKey) => {
 
     if (response.status === 401) {
       return MESSAGE.INVALID_SERVER_KEY;
-    };
+    }
 
     const responseText = await response.text();
 
     let errorMessageCode;
 
     try {
-      const { results: { 0: { error } }} = JSON.parse(responseText);
+      const { results: { 0: { error } } } = JSON.parse(responseText);
 
       errorMessageCode = error;
     } catch (error) {
