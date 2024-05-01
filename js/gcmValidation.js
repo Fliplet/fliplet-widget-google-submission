@@ -4,7 +4,7 @@ const gcmTestButton = document.getElementById('fl-push-testConfigButton');
 const gcmTestSuccessMessage = document.getElementById('fl-push-testSuccessMessage');
 const gcmTestErrorMessage = document.getElementById('fl-push-testErrorMessage');
 
-async function validateGcmServerKey(gcmServerKey) {
+const  validateGcmServerKey = async(gcmServerKey) => {
   try {
     const response = await fetch(
       'https://fcm.googleapis.com/fcm/send',
@@ -52,3 +52,10 @@ gcmTestButton.addEventListener('click', async() => {
 
   gcmTestSuccessMessage.style.display = 'block';
 });
+
+const toggleGcmTestButton = () => {
+  gcmTestButton.disabled = !gcmServerKeyInput.value.length;
+};
+
+gcmServerKeyInput.addEventListener('input', toggleGcmTestButton);
+toggleGcmTestButton();
