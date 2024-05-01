@@ -37,9 +37,13 @@ const  validateGcmServerKey = async(gcmServerKey) => {
   }
 }
 
-gcmTestButton.addEventListener('click', async() => {
+const hideGcmTestMessages = () => {
   gcmTestErrorMessage.style.display = 'none';
   gcmTestSuccessMessage.style.display = 'none';
+};
+
+gcmTestButton.addEventListener('click', async() => {
+  hideGcmTestMessages();
 
   const gcmServerKey = gcmServerKeyInput.value;
   const isValid = await validateGcmServerKey(gcmServerKey);
@@ -54,6 +58,7 @@ gcmTestButton.addEventListener('click', async() => {
 });
 
 const toggleGcmTestButton = () => {
+  hideGcmTestMessages();
   gcmTestButton.disabled = !gcmServerKeyInput.value.length;
 };
 
