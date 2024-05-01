@@ -9,20 +9,20 @@ const MESSAGE = {
   SERVER_ERROR: 'Error - notifications have not been configured correctly. Please review <a href="https://help.fliplet.com" target="_blank">https://help.fliplet.com</a> or contact support.',
   INVALID_SENDER_ID: 'Error - notifications have not been configured correctly. Please check if your Firebase <strong>sender ID</strong> is entered correctly and try again.',
   INVALID_SERVER_KEY: 'Error - notifications have not been configured correctly. Please check if your Firebase <strong>server key</strong> is entered correctly and try again.',
-  FIREBASE_ERROR: 'Error - There is currently an issue relating to Firebase services. Please try again later.',
+  FIREBASE_ERROR: 'Error - There is currently an issue relating to Firebase services. Please try again later.'
 };
 
 const messageCodesMap = {
-    InvalidRegistration: MESSAGE.SUCCESS,
-    MissingRegistration: MESSAGE.SERVER_ERROR,
-    MismatchSenderId: MESSAGE.INVALID_SENDER_ID,
-    NotRegistered: MESSAGE.SUCCESS,
-    MessageTooBig: MESSAGE.SERVER_ERROR,
-    InvalidDataKey: MESSAGE.SERVER_ERROR,
-    InvalidTtl: MESSAGE.SERVER_ERROR,
-    InternalServerError: MESSAGE.FIREBASE_ERROR,
-    Unavailable: MESSAGE.FIREBASE_ERROR,
-    DeviceMessageRateExceeded: MESSAGE.FIREBASE_ERROR,
+  InvalidRegistration: MESSAGE.SUCCESS,
+  MissingRegistration: MESSAGE.SERVER_ERROR,
+  MismatchSenderId: MESSAGE.INVALID_SENDER_ID,
+  NotRegistered: MESSAGE.SUCCESS,
+  MessageTooBig: MESSAGE.SERVER_ERROR,
+  InvalidDataKey: MESSAGE.SERVER_ERROR,
+  InvalidTtl: MESSAGE.SERVER_ERROR,
+  InternalServerError: MESSAGE.FIREBASE_ERROR,
+  Unavailable: MESSAGE.FIREBASE_ERROR,
+  DeviceMessageRateExceeded: MESSAGE.FIREBASE_ERROR,
 };
 
 const renderResultMessage = (resultMessage) => {
@@ -31,12 +31,13 @@ const renderResultMessage = (resultMessage) => {
     gcmTestResultMessage.innerHTML = '';
 
     return;
-  };
+  }
 
   gcmTestResultMessage.style.display = 'block';
   gcmTestResultMessage.innerHTML = resultMessage;
 
   const success = resultMessage === MESSAGE.SUCCESS;
+
   gcmTestResultMessage.classList.toggle('text-success', success);
   gcmTestResultMessage.classList.toggle('text-danger', !success);
 };
@@ -64,9 +65,10 @@ const validateGcmServerKey = async(gcmServerKey) => {
 
     try {
       const { results: { 0: { error } }} = JSON.parse(responseText);
+
       errorMessageCode = error;
     } catch (error) {
-      errorMessageCode = responseText.replace("Error=", "");
+      errorMessageCode = responseText.replace('Error=', '');
     }
 
     const message = messageCodesMap[errorMessageCode];
