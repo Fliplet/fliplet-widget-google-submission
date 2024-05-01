@@ -35,7 +35,7 @@ const  validateGcmServerKey = async(gcmServerKey) => {
 
     return false;
   }
-}
+};
 
 const hideGcmTestMessages = () => {
   gcmTestErrorMessage.style.display = 'none';
