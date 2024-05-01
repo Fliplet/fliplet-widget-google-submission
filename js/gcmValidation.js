@@ -7,8 +7,8 @@ const gcmTestResultMessage = document.getElementById('fl-push-testResultMessage'
 const MESSAGE = {
   SUCCESS: 'Success! Push notifications have been configured correctly.',
   SERVER_ERROR: 'Error - notifications have not been configured correctly. Please review <a href="https://help.fliplet.com" target="_blank">https://help.fliplet.com</a> or contact support.',
-  INVALID_SENDER_ID: 'Error - notifications have not been configured correctly. Please check if your Firebase sender ID is entered correctly and try again.',
-  INVALID_SERVER_KEY: 'Error - notifications have not been configured correctly. Please check if your Firebase server key is entered correctly and try again.',
+  INVALID_SENDER_ID: 'Error - notifications have not been configured correctly. Please check if your Firebase <strong>sender ID</strong> is entered correctly and try again.',
+  INVALID_SERVER_KEY: 'Error - notifications have not been configured correctly. Please check if your Firebase <strong>server key</strong> is entered correctly and try again.',
   FIREBASE_ERROR: 'Error - There is currently an issue relating to Firebase services. Please try again later.',
 };
 
@@ -46,7 +46,10 @@ const validateGcmServerKey = async(gcmServerKey) => {
     const response = await fetch('https://fcm.googleapis.com/fcm/send',
       {
         method: 'POST',
-        headers: { Authorization: `key=${gcmServerKey}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `key=${gcmServerKey}`
+        },
         body: JSON.stringify({ registration_ids: ['fake_device token'] }) // Use a fake device token to test the server key
       }
     );
@@ -55,7 +58,16 @@ const validateGcmServerKey = async(gcmServerKey) => {
       return MESSAGE.INVALID_SERVER_KEY;
     };
 
-    const { results: { 0: errorMessageCode }} = await response.json();
+    const responseText = await response.text();
+
+    let errorMessageCode;
+
+    try {
+      const { results: { 0: { error } }} = JSON.parse(responseText);
+      errorMessageCode = error;
+    } catch (error) {
+      errorMessageCode = responseText.replace("Error=", "");
+    }
 
     const message = messageCodesMap[errorMessageCode];
 
