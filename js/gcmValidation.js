@@ -7,7 +7,7 @@ const gcmTestErrorMessage = document.getElementById('fl-push-testErrorMessage');
 async function validateGcmServerKey(gcmServerKey) {
   try {
     const response = await fetch(
-      `https://fcm.googleapis.com/fcm/send`,
+      'https://fcm.googleapis.com/fcm/send',
       {
         method: 'POST',
         headers: {
@@ -30,13 +30,14 @@ async function validateGcmServerKey(gcmServerKey) {
 
     return true;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Failed to send message:', error);
 
     return false;
   }
 }
 
-gcmTestButton.addEventListener('click', async () => {
+gcmTestButton.addEventListener('click', async() => {
   gcmTestErrorMessage.style.display = 'none';
   gcmTestSuccessMessage.style.display = 'none';
 
