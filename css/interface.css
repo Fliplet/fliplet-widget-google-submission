@@ -514,3 +514,13 @@ h3 small {
   max-width: 320px;
   word-wrap: break-word;
 }
+
+#fl-push-testConfigButton {
+  width: 9rem;
+}
+
+#fl-push-testSuccessMessage,
+#fl-push-testErrorMessage {
+  padding: 10px 0;
+  display: none;
+}
