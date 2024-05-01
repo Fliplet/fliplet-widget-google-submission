@@ -1,4 +1,6 @@
 const gcmServerKeyInput = document.getElementById('fl-push-serverKey');
+const gcmSenderIdInput = document.getElementById('fl-push-senderId');
+const gcmProjectIdInput = document.getElementById('fl-push-projectId');
 const gcmTestButton = document.getElementById('fl-push-testConfigButton');
 
 const gcmTestSuccessMessage = document.getElementById('fl-push-testSuccessMessage');
@@ -59,8 +61,10 @@ gcmTestButton.addEventListener('click', async() => {
 
 const toggleGcmTestButton = () => {
   hideGcmTestMessages();
-  gcmTestButton.disabled = !gcmServerKeyInput.value.length;
+  gcmTestButton.disabled = !gcmServerKeyInput.value.length || !gcmSenderIdInput.value.length || !gcmProjectIdInput.value.length;
 };
 
 gcmServerKeyInput.addEventListener('input', toggleGcmTestButton);
+gcmSenderIdInput.addEventListener('input', toggleGcmTestButton);
+gcmProjectIdInput.addEventListener('input', toggleGcmTestButton);
 toggleGcmTestButton();
