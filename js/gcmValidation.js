@@ -97,7 +97,6 @@ gcmTestButton.addEventListener('click', async() => {
 
 const toggleGcmTestButton = () => {
   renderResultMessage(null);
-  gcmTestButton.disabled = !gcmServerKeyInput.value.length || !gcmSenderIdInput.value.length || !gcmProjectIdInput.value.length;
 };
 
 [ gcmServerKeyInput, gcmSenderIdInput, gcmProjectIdInput ].forEach(input => input.addEventListener('input', toggleGcmTestButton));
