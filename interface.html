@@ -405,66 +405,65 @@
     </div>
     <div role="tabpanel" class="tab-pane fl-sb-push" id="push-tab">
       <form data-disable="false" role="form" id="pushConfiguration">
-        <p class="text-info">You need to publish your app for these push notifications settings to be applied to your app.</p>
-        <div class="panel-group" id="accordionPush" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="notificationsHeading">
-              <h4 class="panel-title collapsed" role="button" data-toggle="collapse" data-parent="#accordionPush" href="#notifications" aria-expanded="true" aria-controls="notifications">Push notifications technical details <small>(Optional)</small> <i class="fa fa-angle-down" aria-hidden="true"></i></h4>
-            </div>
-            <div id="notifications" class="panel-collapse collapse" role="tabpanel" aria-labelledby="notificationsHeading">
-              <div class="panel-body">
-                <p>Push notifications can be set up at a later stage if you don't want to configure it now. It's the only section on this screen that you can edit after submission.</p>
-                <p>For instructions on how to get the information you need to configure this section, see these help articles:</p>
-                <ul>
-                  <li><a href="https://help.fliplet.com/push-notifications/#2" target="_blank">How to set-up push notifications for Android</a></li>
-                </ul>
-                <p><strong>Push Notifications will only work for the app with the same Sender ID entered below.</strong></p>
-                <div class="form-group clearfix">
-                  <div class="col-sm-4 control-label">
-                    <label for="fl-push-senderId">Firebase sender ID</label>
-                    <p class="help-block label-helper"><small>The sender ID can be found in the Firebase Console in <strong>Settings > Cloud Messaging</strong>.</small></p>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="text" name="fl-push-senderId" class="form-control" id="fl-push-senderId" />
-                  </div>
-                </div>
-                <div class="form-group clearfix">
-                  <div class="col-sm-4 control-label">
-                    <label for="fl-push-serverKey">Firebase server key</label>
-                    <p class="help-block label-helper"><small>The server key can be found in the Firebase Console in <strong>Settings > Cloud Messaging</strong>.</small></p>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="text" name="fl-push-serverKey" class="form-control" id="fl-push-serverKey" />
-                  </div>
-                </div>
-                <div class="form-group clearfix">
-                  <div class="col-sm-4 control-label">
-                    <label for="fl-push-projectId">Firebase project ID</label>
-                    <p class="help-block label-helper"><small>The project ID can be found in the Firebase Console in <strong>Settings > General</strong>.</small></p>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="text" name="fl-push-projectId" class="form-control" id="fl-push-projectId" />
-                  </div>
-                </div>
-                <div class="form-group clearfix">
-                  <div class="col-sm-4 control-label">
-                    <label for="fl-push-projectId">Use this to test your credentials are set up correctly</label>
-                  </div>
-                  <div class="col-sm-8">
-                    <input type="button" id="fl-push-testConfigButton" class="btn btn-primary" value="Test" />
-                    <p id="fl-push-testResultMessage"></p>
-                  </div>
-                </div>
-              </div>
+        <h4 class="font-semibold m-0 mb-2">Push notifications technical details</h4>
+        <p>Follow the steps below to configure push notifications.</p>
+
+        <div class="flex mb-8">
+          <div class="font-bold" style="width: 85px">Step 1</div>
+          <div>Set up Google firebase <a href="https://firebase.google.com/" target="_blank">https://firebase.google.com/</a></div>
+        </div>
+
+        <div class="flex mb-8">
+          <div class="font-bold" style="width: 85px">Step 2</div>
+          <div>
+            Configure a project for your app. Follow detailed instructions here <a href="https://support.google.com/appsheet/answer/10104995?hl=en" target="_blank">https://support.google.com/appsheet/answer/10104995?hl=en</a>
+          </div>
+        </div>
+
+        <div class="flex mb-8">
+          <div class="font-bold" style="width: 85px">Step 3</div>
+          <div>
+            <p class="mb-4">Upload Google-services file</p>
+            <div class="received flex items-center text-fl-gray text-[12px] mb-2"><i class="lets-icons--check-ring text-[24px] mr-2" aria-hidden="true"></i>File received <span id="fl-push-google-services-timestamp" class="timestamp"></span></div>
+            <div class="flex items-center">
+              <label class="flex">
+                <span class="btn btn-default">Upload Google-services.json file<input id="fl-push-google-services-file" name="fl-push-google-services" class="hidden" type="file" accept=".json" data-error="Please upload a .plist file."></span>
+              </label>
+              <span class="ml-4 font-bold" id="fl-push-google-services-validation"></span>
             </div>
           </div>
         </div>
-        <hr>
-        <div class="col-xs-6 save-btn-holder">
-          <p class="help-block"><small>After saving, send notifications from the "Send notifications" button on the Publish screen.</small></p>
-          <div class="btn btn-primary" data-push-save>Save <i class="fa fa-cloud-upload"></i></div>
-          <p class="text-success save-push-progress">Your data saved successfully!</p>
+
+        <div class="flex mb-8">
+          <div class="font-bold" style="width: 85px">Step 4</div>
+          <div>
+            Visit Google Cloud <a href="https://console.cloud.google.com/" target="_blank">https://console.cloud.google.com/</a> to set up your FCM Service account. 
+            <br/> Follow detailed instructions here
+          </div>
         </div>
+
+        <div class="flex mb-8">
+          <div class="font-bold" style="width: 85px">Step 5</div>
+          <div>
+            <p class="mb-4">Once the above steps are completed upload your private key in the form of a JSON file</p>
+            <div class="received flex items-center text-fl-gray text-[12px] mb-2"><i class="lets-icons--check-ring text-[24px] mr-2" aria-hidden="true"></i>File received <span id="fl-push-service-account-timestamp" class="timestamp">123</span></div>
+            <div class="flex items-center">
+              <label class="flex">
+                <span class="btn btn-default">Upload Service Account .json file<input id="fl-push-service-account-file" name="fl-push-service-account" class="hidden" type="file" accept=".json" data-error="Please upload a .plist file."></span>
+              </label>
+              <span class="ml-4 font-bold" id="fl-push-service-account-uploaded"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex">
+          <div class="font-bold mb-4" style="width: 85px">Step 6</div>
+          <div>
+            Save and return to the Google Play section to complete  your app build.
+          </div>
+        </div>
+
+        <div class="btn btn-primary" style="margin-left: 85px;" data-push-save>Save</div>
       </form>
     </div>
   </div>

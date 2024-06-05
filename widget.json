@@ -29,7 +29,8 @@
       "vendor/validator.js",
       "css/interface.css",
       "js/interface.js",
-      "js/gcmValidation.js"
+      "js/schemaValidation.js",
+      "js/fcmValidation.js"
     ]
   },
   "build": {
