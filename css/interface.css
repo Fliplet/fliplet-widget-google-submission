@@ -541,6 +541,14 @@ h3 small {
   color: #57565A;
 }
 
+.received {
+  display: none;
+}
+
+.received:has(.timestamp:not(:empty)) {
+  display: flex;
+}
+
 /* Tailwind-ready classes; TODO: remove after adopting tailwind */
 
 .text-\[12px\] {
@@ -589,12 +597,4 @@ h3 small {
 
 .ml-4 {
   margin-left: 1rem;
-}
-
-.received {
-  display: none;
-}
-
-.received:has(.timestamp:not(:empty)) {
-  display: block;
 }
