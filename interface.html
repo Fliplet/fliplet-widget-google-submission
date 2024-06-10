@@ -162,23 +162,8 @@
                     <br>
                     <p>Google Firebase offers analytics via Google Analytics, push notifications and other features. <a href="https://help.fliplet.com/article/217">Learn more about Firebase.</a></p>
                     <small>
-                      To enable:
-                      <ol>
-                        <li>Login to a Firebase account (any existing Google Account can be used).</li>
-                        <li>Create a new app.</li>
-                        <li>Select Android.</li>
-                        <li>Download your Firebase json file.</li>
-                        <li>Upload it by clicking the button below.</li>
-                      </ol>
+                      To enable go to “Push Notifications” tab and <strong>complete Steps 1-3 and 7</strong> of the configuration.
                     </small>
-                  </div>
-                  <div class="col-sm-4">
-                    <label class="input-group-btn">
-                      <span class="btn btn-default">Upload Firebase .json file<input id="fl-store-firebase" name="fl-store-firebase" class="hidden" type="file" accept=".json" data-error="Please upload a .plist file."></span>
-                    </label>
-                    <div class="help-block with-errors">
-                      <p id="fl-store-firebase-uploaded" class="hidden"><strong>✔ You selected a config file.</strong></p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -410,13 +395,15 @@
 
         <div class="flex mb-8">
           <div class="font-bold" style="width: 85px">Step 1</div>
-          <div>Set up Google firebase <a href="https://firebase.google.com/" target="_blank">https://firebase.google.com/</a></div>
+          <div><p>Set up <a href="https://firebase.google.com/" target="_blank">Google Firebase</a></div>
         </div>
 
         <div class="flex mb-8">
           <div class="font-bold" style="width: 85px">Step 2</div>
           <div>
-            Configure a project for your app. Follow detailed instructions here <a href="https://support.google.com/appsheet/answer/10104995?hl=en" target="_blank">https://support.google.com/appsheet/answer/10104995?hl=en</a>
+            <p>
+              Configure a project for your app. Follow detailed instructions <a href="https://support.google.com/appsheet/answer/10104995?hl=en" target="_blank">here</a>
+            </p>
           </div>
         </div>
 
@@ -424,7 +411,7 @@
           <div class="font-bold" style="width: 85px">Step 3</div>
           <div>
             <p class="mb-4">Upload Google-services file</p>
-            <div class="received flex items-center text-fl-gray text-[12px] mb-2"><i class="lets-icons--check-ring text-[24px] mr-2" aria-hidden="true"></i>File received <span id="fl-push-google-services-timestamp" class="timestamp"></span></div>
+            <div class="received items-center text-fl-gray text-[12px] mb-2"><i class="lets-icons--check-ring text-[24px] mr-2" aria-hidden="true"></i>File received&nbsp;<span id="fl-push-google-services-timestamp" class="timestamp"></span></div>
             <div class="flex items-center">
               <label class="flex">
                 <span class="btn btn-default">Upload Google-services.json file<input id="fl-push-google-services-file" name="fl-push-google-services" class="hidden" type="file" accept=".json" data-error="Please upload a .plist file."></span>
@@ -437,7 +424,7 @@
         <div class="flex mb-8">
           <div class="font-bold" style="width: 85px">Step 4</div>
           <div>
-            Visit Google Cloud <a href="https://console.cloud.google.com/" target="_blank">https://console.cloud.google.com/</a> to set up your FCM Service account. 
+            Visit <a href="https://console.cloud.google.com/" target="_blank">Google Cloud</a> to set up your FCM Service account. 
             <br/> Follow detailed instructions here
           </div>
         </div>
@@ -446,7 +433,7 @@
           <div class="font-bold" style="width: 85px">Step 5</div>
           <div>
             <p class="mb-4">Once the above steps are completed upload your private key in the form of a JSON file</p>
-            <div class="received flex items-center text-fl-gray text-[12px] mb-2"><i class="lets-icons--check-ring text-[24px] mr-2" aria-hidden="true"></i>File received <span id="fl-push-service-account-timestamp" class="timestamp"></span></div>
+            <div class="received items-center text-fl-gray text-[12px] mb-2"><i class="lets-icons--check-ring text-[24px] mr-2" aria-hidden="true"></i>File received&nbsp;<span id="fl-push-service-account-timestamp" class="timestamp"></span></div>
             <div class="flex items-center">
               <label class="flex">
                 <span class="btn btn-default">Upload Service Account .json file<input id="fl-push-service-account-file" name="fl-push-service-account" class="hidden" type="file" accept=".json" data-error="Please upload a .plist file."></span>
@@ -463,7 +450,7 @@
           </div>
         </div>
 
-        <div class="btn btn-primary" style="margin-left: 85px;" data-push-save>Save</div>
+        <div class="btn btn-primary" style="margin-left: 85px;" data-push-save disabled>Save</div>
       </form>
     </div>
   </div>
