@@ -53,38 +53,6 @@ function incrementVersionNumber(versionNumber) {
   return splitNumber.join('.');
 }
 
-function saveFirebaseSettings(origin) {
-  var formData;
-
-  if (origin === 'appStore' && appStoreFirebaseFileField && appStoreFirebaseFileField.files[0]) {
-    formData = new FormData();
-
-    formData.append('firebase', appStoreFirebaseFileField.files[0]);
-
-    return setFirebaseConfigFile(appStoreSubmission.id, formData);
-  }
-
-  if (origin === 'enterprise' && enterpriseFirebaseFileField && enterpriseFirebaseFileField.files[0]) {
-    formData = new FormData();
-
-    formData.append('firebase', enterpriseFirebaseFileField.files[0]);
-
-    return setFirebaseConfigFile(enterpriseSubmission.id, formData);
-  }
-
-  return Promise.resolve();
-}
-
-function setFirebaseConfigFile(id, file) {
-  return Fliplet.API.request({
-    method: 'PUT',
-    url: 'v1/organizations/' + Fliplet.Env.get('organizationId') + '/credentials/submission-' + id + '?fileName=firebase',
-    data: file,
-    contentType: false,
-    processData: false
-  });
-}
-
 function incrementVersionCode(versionNumber) {
   var newVersionNumber = incrementVersionNumber(versionNumber);
   var splitNumber = newVersionNumber.split('.');
@@ -348,9 +316,7 @@ function submissionBuild(appSubmission, origin) {
   var newVersionNumber;
   var newVersionCode;
 
-  saveFirebaseSettings(origin).then(function() {
-    return Fliplet.App.Submissions.build(appSubmission.id);
-  }).then(function(builtSubmission) {
+  Fliplet.App.Submissions.build(appSubmission.id).then(function(builtSubmission) {
     if (origin === 'appStore') {
       appStoreSubmission = builtSubmission.submission;
 

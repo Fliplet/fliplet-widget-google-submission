@@ -35,6 +35,8 @@ const state = {
   isGoogleServicesFileValid: undefined,
   isServiceAccountFileValid: undefined,
   formData: {},
+  googleServicesFile: null,
+
 };
 
 // called from interface.js after fetching the widget instance data
@@ -73,7 +75,10 @@ const validateGoogleServicesFile = async (file) => {
     validationMessageElement.classList.toggle('text-danger', !state.isGoogleServicesFileValid );
     validationMessageElement.classList.toggle('text-success', state.isGoogleServicesFileValid );
 
-    if (state.isGoogleServicesFileValid) state.formData.googleServices = fileContentJSON;
+    if (state.isGoogleServicesFileValid) {
+      state.googleServicesFile = file;
+      state.formData.googleServicesTimestamp = new Date().getTime();
+    }
 
     if (!state.isGoogleServicesFileValid || state.isServiceAccountFileValid === false) saveButton.setAttribute('disabled', true);
     else saveButton.removeAttribute('disabled');
@@ -150,7 +155,8 @@ const validateServiceAccountFile = async (file) => {
         ...state.formData,
         client_email,
         project_id,
-        private_key
+        private_key,
+        serviceAccountTimestamp: new Date().getTime()
       }
     }
 
@@ -167,32 +173,39 @@ fileInputs.serviceAccount.addEventListener('change', (event) => {
   validateServiceAccountFile(file);
 });
 
-const savePushData = async () => {
-  // TODO: get rid of lodash here
-  const googleServicesChanged = !_.isEqual(state.formData.googleServices, previousState.googleServices);
-  const serviceAccountChanged = state.formData.client_email !== previousState.client_email || state.formData.project_id !== previousState.project_id || state.formData.private_key !== previousState.private_key;
+const uploadFirebaseFile = async (submissionId, formData) => 
+  Fliplet.API.request({
+    method: 'PUT',
+    url: 'v1/organizations/' + Fliplet.Env.get('organizationId') + '/credentials/submission-' + submissionId + '?fileName=firebase',
+    data: formData,
+    contentType: false,
+    processData: false
+  });
 
-  if (!googleServicesChanged && !serviceAccountChanged) {
+const savePushData = async () => {
+  const payloadChanged = previousState.googleServicesTimestamp !== state.formData.googleServicesTimestamp || previousState.serviceAccountTimestamp !== state.formData.serviceAccountTimestamp;
+
+  if (!payloadChanged) {
     return;
   }
 
-  if (googleServicesChanged || !previousState.googleServicesTimestamp) {
-    state.formData.googleServicesTimestamp = new Date().getTime();
-  }
-  
-  if (serviceAccountChanged || !previousState.serviceAccountTimestamp) {
-    state.formData.serviceAccountTimestamp = new Date().getTime();
-  }
+  const form = new FormData();
+  form.append('firebase', state.googleServicesFile);
 
-  await Fliplet.API.request({
-    method: 'PUT',
-    url: 'v1/widget-instances/com.fliplet.push-notifications?appId=' + Fliplet.Env.get('appId'),
-    data: {
-      ...state.formData,
-      fcm: true,
-      gcm: false,
-    },
-  });
+  await Promise.all([
+    // temporary solution to upload the file to both submissions
+    uploadFirebaseFile(appStoreSubmission.id, form), // appStoreSubmission is a global variable set in interface.js
+    uploadFirebaseFile(enterpriseSubmission.id, form),  // enterpriseSubmission is a global variable set in interface.js
+    Fliplet.API.request({
+      method: 'PUT',
+      url: 'v1/widget-instances/com.fliplet.push-notifications?appId=' + Fliplet.Env.get('appId'),
+      data: {
+        ...state.formData,
+        fcm: true,
+        gcm: false,
+      },
+    })
+  ])
 
   renderTimestamps(state.formData);
 }
