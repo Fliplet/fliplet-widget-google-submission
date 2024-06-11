@@ -28,8 +28,9 @@
       "vendor/bootstrap-select.min.js",
       "vendor/validator.js",
       "css/interface.css",
-      "js/interface.js",
-      "js/gcmValidation.js"
+      "js/schemaValidation.js",
+      "js/pushNotifications.js",
+      "js/interface.js"
     ]
   },
   "build": {
