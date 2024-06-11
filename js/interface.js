@@ -9,8 +9,6 @@ var appIcon = '';
 var appSettings = {};
 var allAppData = [];
 var appStoreSubmission = {};
-var appStoreFirebaseFileField;
-var enterpriseFirebaseFileField;
 var previousAppStoreSubmission = {};
 var enterpriseSubmission = {};
 var previousEnterpriseSubmission = {};
@@ -247,11 +245,6 @@ function loadEnterpriseData() {
       $('.bundleId-apk-text').html(enterpriseSubmission.data[name]);
       $('[name="' + name + '"]').val(enterpriseSubmission.data[name]);
 
-      return;
-    }
-
-    // Firebase
-    if (name === 'fl-ent-firebase') {
       return;
     }
 
@@ -710,38 +703,6 @@ $('[name="submissionType"]').on('change', function() {
   $('.' + selectedOptionId).addClass('show');
 
   Fliplet.Widget.autosize();
-});
-
-$('#fl-store-firebase').on('change', function() {
-  var fileName = this.value.replace(/\\/g, '/').replace(/.*\//, '');
-  var fileExtension = checkFileExtension(fileName, this);
-
-  if (!fileExtension) {
-    return;
-  }
-
-  appStoreFirebaseFileField = this;
-
-  if (this.files && this.files[0]) {
-    $('#fl-store-firebase-uploaded').html('File uploaded: <strong>' + fileName + '</strong>').removeClass('hidden');
-    $('#fl-store-firebase-status').html('Enabled').addClass('analytic-enabled');
-  }
-});
-
-$('#fl-ent-firebase').on('change', function() {
-  var fileName = this.value.replace(/\\/g, '/').replace(/.*\//, '');
-  var fileExtension = checkFileExtension(fileName, this);
-
-  if (!fileExtension) {
-    return;
-  }
-
-  enterpriseFirebaseFileField = this;
-
-  if (this.files && this.files[0]) {
-    $('#fl-ent-firebase-uploaded').html('File uploaded: <strong>' + fileName + '</strong>').removeClass('hidden');
-    $('#fl-ent-firebase-status').html('Enabled').addClass('analytic-enabled');
-  }
 });
 
 $('.fl-sb-appStore [change-bundleid], .fl-sb-fliplet-signed [change-bundleid]').on('click', function() {
