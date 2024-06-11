@@ -218,9 +218,10 @@ const saveWidgetInstanceData = async () => {
 }
 
 const savePushData = async () => {
-  const payloadChanged = previousState.googleServicesTimestamp !== state.formData.googleServicesTimestamp || previousState.serviceAccountTimestamp !== state.formData.serviceAccountTimestamp;
+  const googleServicesFileChanged = previousState.googleServicesTimestamp !== state.formData.googleServicesTimestamp;
+  const serviceAccountFileChanged = previousState.serviceAccountTimestamp !== state.formData.serviceAccountTimestamp;
 
-  if (!payloadChanged) {
+  if (!googleServicesFileChanged && !serviceAccountFileChanged) {
     return;
   }
 
@@ -228,9 +229,11 @@ const savePushData = async () => {
   formData.append('firebase', state.googleServicesFile);
 
   await Promise.all([
-    uploadFirebaseFileToStorage(formData),
-    uploadFirebaseFileToSubmission(appStoreSubmission, formData), 
-    uploadFirebaseFileToSubmission(enterpriseSubmission, formData),  
+    ...(googleServicesFileChanged ? [
+      uploadFirebaseFileToStorage(formData),
+      uploadFirebaseFileToSubmission(appStoreSubmission, formData), 
+      uploadFirebaseFileToSubmission(enterpriseSubmission, formData), 
+    ] : []),
     saveWidgetInstanceData(),
   ]);
 
