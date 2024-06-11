@@ -67,10 +67,16 @@ const validateGoogleServicesFile = async (file) => {
     const fileContentJSON = JSON.parse(fileReader.result);
     state.isGoogleServicesFileValid = validateGoogleServicesSchema(fileContentJSON);
 
-
-    validationMessageElement.innerHTML = state.isGoogleServicesFileValid 
+    const bundleIds = [...document.querySelectorAll('input[name*="bundleId"]')].map(input => input.value);
+    
+    if (!bundleIds.includes(fileContentJSON.client[0].client_info.android_client_info.package_name)) {
+      state.isGoogleServicesFileValid = false;
+      validationMessageElement.innerHTML = 'Error: the package name in the file does not match the bundle ID';
+    } else {
+      validationMessageElement.innerHTML = state.isGoogleServicesFileValid 
       ? FILE_VALIDATION_MESSAGE.SUCCESS
       : FILE_VALIDATION_MESSAGE.ERROR;
+    }
 
     validationMessageElement.classList.toggle('text-danger', !state.isGoogleServicesFileValid );
     validationMessageElement.classList.toggle('text-success', state.isGoogleServicesFileValid );
