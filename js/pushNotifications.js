@@ -179,14 +179,43 @@ fileInputs.serviceAccount.addEventListener('change', (event) => {
   validateServiceAccountFile(file);
 });
 
-const uploadFirebaseFile = async (submissionId, formData) => 
+const uploadFirebaseFileToStorage = async (formData) => {
+  const file = await Fliplet.Media.Files.upload({
+    data: formData,
+    appId: Fliplet.Env.get('appId')
+  });
+  
+  // use the file in both submissions; submissions are global variables defined in interface.js
+  appStoreSubmission.data['fl-store-firebase'] = file;
+  enterpriseSubmission.data['fl-ent-firebase'] = file;
+
+  await Promise.all([
+    // save method is defined in interface.js
+    save('appStore', appStoreSubmission),
+    save('enterprise', enterpriseSubmission)
+  ])
+}
+
+const uploadFirebaseFileToSubmission = (submission, formData) =>
   Fliplet.API.request({
     method: 'PUT',
-    url: 'v1/organizations/' + Fliplet.Env.get('organizationId') + '/credentials/submission-' + submissionId + '?fileName=firebase',
+    url: `v1/organizations/${Fliplet.Env.get('organizationId')}/credentials/submission-${submission.id}?fileName=firebase`,
     data: formData,
     contentType: false,
     processData: false
   });
+
+const saveWidgetInstanceData = async () => {
+  await Fliplet.API.request({
+    method: 'PUT',
+    url: `v1/widget-instances/com.fliplet.push-notifications?appId=${Fliplet.Env.get('appId')}`,
+    data: {
+      ...state.formData,
+      fcm: true,
+      gcm: false,
+    },
+  });
+}
 
 const savePushData = async () => {
   const payloadChanged = previousState.googleServicesTimestamp !== state.formData.googleServicesTimestamp || previousState.serviceAccountTimestamp !== state.formData.serviceAccountTimestamp;
@@ -195,24 +224,17 @@ const savePushData = async () => {
     return;
   }
 
-  const form = new FormData();
-  form.append('firebase', state.googleServicesFile);
+  const formData = new FormData();
+  formData.append('firebase', state.googleServicesFile);
 
   await Promise.all([
-    // temporary solution to upload the file to both submissions
-    uploadFirebaseFile(appStoreSubmission.id, form), // appStoreSubmission is a global variable set in interface.js
-    uploadFirebaseFile(enterpriseSubmission.id, form),  // enterpriseSubmission is a global variable set in interface.js
-    Fliplet.API.request({
-      method: 'PUT',
-      url: 'v1/widget-instances/com.fliplet.push-notifications?appId=' + Fliplet.Env.get('appId'),
-      data: {
-        ...state.formData,
-        fcm: true,
-        gcm: false,
-      },
-    })
-  ])
+    uploadFirebaseFileToStorage(formData),
+    uploadFirebaseFileToSubmission(appStoreSubmission, formData), 
+    uploadFirebaseFileToSubmission(enterpriseSubmission, formData),  
+    saveWidgetInstanceData(),
+  ]);
 
+  
   renderTimestamps(state.formData);
 }
 

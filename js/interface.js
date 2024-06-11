@@ -517,28 +517,6 @@ function saveAppStoreData(request) {
       return;
     }
 
-    if ($(el).attr('type') === 'file') {
-      var fileList = el.files;
-      var file = new FormData();
-
-      if (fileList.length > 0) {
-        for (var i = 0; i < fileList.length; i++) {
-          file.append(name, fileList[i]);
-        }
-
-        uploadFilePromise = Fliplet.Media.Files.upload({
-          data: file,
-          appId: Fliplet.Env.get('appId')
-        }).then(function(files) {
-          data[name] = files;
-
-          return Promise.resolve();
-        });
-      }
-
-      return;
-    }
-
     data[name] = value;
   });
 
@@ -588,28 +566,6 @@ function saveEnterpriseData(request) {
 
     if (typeof value === 'string') {
       value = value.trim();
-    }
-
-    if ($(el).attr('type') === 'file') {
-      var fileList = el.files;
-      var file = new FormData();
-
-      if (fileList.length > 0) {
-        for (var i = 0; i < fileList.length; i++) {
-          file.append(name, fileList[i]);
-        }
-
-        uploadFilePromise = Fliplet.Media.Files.upload({
-          data: file,
-          appId: Fliplet.Env.get('appId')
-        }).then(function(files) {
-          data[name] = files;
-
-          return Promise.resolve();
-        });
-      }
-
-      return;
     }
 
     data[name] = value;
