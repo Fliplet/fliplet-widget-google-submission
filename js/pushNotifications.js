@@ -106,7 +106,16 @@ const validateServiceAccountFile = async (file) => {
       return;
     }
 
-    const response = await fetch(`/v1/apps/${Fliplet.Env.get('appId')}/notifications/validate-fcm-config`, { method: 'POST', body: JSON.stringify({ client_email, project_id, private_key} )});
+    const response = await fetch(
+      `/v1/apps/${Fliplet.Env.get('appId')}/notifications/validate-fcm-config`, 
+      { 
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ client_email, project_id, private_key} )
+      }
+    );
     const { message } = await response.json();
 
     let errorMessage = null;
