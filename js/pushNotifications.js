@@ -178,7 +178,11 @@ const savePushData = async () => {
   await Fliplet.API.request({
     method: 'PUT',
     url: 'v1/widget-instances/com.fliplet.push-notifications?appId=' + Fliplet.Env.get('appId'),
-    data: state.formData,
+    data: {
+      ...state.formData,
+      fcm: true,
+      gcm: false,
+    },
   });
 
   renderTimestamps(state.formData);
