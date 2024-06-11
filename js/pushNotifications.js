@@ -127,7 +127,7 @@ const validateServiceAccountFile = async (file) => {
       errorMessage = SERVICE_ACCUNT_FILE_VALIDATION_MESSAGE.INVALID_PRIVATE_KEY;
     }
 
-    state.isServiceAccountFileValid = !errorMessage && message === 'SenderId mismatch';
+    state.isServiceAccountFileValid = !errorMessage && message === 'SenderId mismatch' || message === 'Requested entity was not found.';
 
     validationMessageElement.innerHTML = state.isServiceAccountFileValid
       ? FILE_VALIDATION_MESSAGE.SUCCESS
