@@ -85,8 +85,14 @@ const validateSchema = (schema, data) => {
   const validateObject = (schema, data) => {
     if (!validateType(data, schema.type)) return false;
 
-    for (const key of schema.required) {
-      if (!(key in data)) return false;
+    if (schema.required) {
+      for (const key of schema.required) {
+        if (!(key in data)) return false;
+      }
+    }
+
+    if (!schema.properties) {
+      return true;
     }
 
     for (const key in data) {
