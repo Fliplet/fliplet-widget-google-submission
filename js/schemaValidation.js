@@ -91,8 +91,8 @@ const validateSchema = (schema, data) => {
       }
     }
 
-    if (!schema.properties) { 
-      return true; 
+    if (!schema.properties) {
+      return true;
     }
 
     for (const key in data) {
