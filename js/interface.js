@@ -1096,6 +1096,14 @@ $('.panel-collapse').on('shown.bs.collapse', function() {
   Fliplet.Studio.emit('scrollOverlayTo', $panel.offset().top);
 });
 
+// Scroll accordion tab to the top
+$('.panel-collapse').on('shown.bs.collapse', function () {
+  var $panel = $(this).closest('.panel');
+  $('html,body').animate({
+    scrollTop: $panel.offset().top
+  }, 500);
+});
+
 $(document).on('click', '[data-cancel-build-id]', function() {
   var buildId = $(this).data('cancel-build-id');
 
