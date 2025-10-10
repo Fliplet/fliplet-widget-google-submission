@@ -12,6 +12,7 @@
       "lodash",
       "fliplet-app-submissions",
       "fliplet-media",
+      "fliplet-utils",
       "fliplet-studio-ui",
       "handlebars",
       "bootstrap",
