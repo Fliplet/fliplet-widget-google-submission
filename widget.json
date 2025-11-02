@@ -9,7 +9,6 @@
   "html_tag": "div",
   "interface": {
     "dependencies": [
-      "lodash",
       "fliplet-app-submissions",
       "fliplet-media",
       "fliplet-utils",
