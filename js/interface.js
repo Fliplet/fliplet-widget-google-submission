@@ -107,7 +107,7 @@ function loadAppStoreData() {
 
     /* ADD BUNDLE ID */
     if (name === 'fl-store-bundleId' && typeof appStoreSubmission.data[name] === 'undefined') {
-      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName);
+      var bundleId = 'com.' + Fliplet.Utils.camelCase(organizationName) + '.' + Fliplet.Utils.camelCase(appName);
 
       createBundleId(bundleId).then(function(response) {
         if (response.resultCount === 0) {
@@ -189,11 +189,11 @@ function loadAppStoreData() {
     $('[data-item="fl-store-screenshots-new-warning"]').removeClass('show');
     $('[data-item="fl-store-screenshots-new"]').addClass('show');
 
-    _.take(screenShotsMobile, 4).forEach(function(thumb) {
+    Fliplet.Utils.take(screenShotsMobile, 4).forEach(function(thumb) {
       $('.mobile-thumbs').append(addThumb(thumb));
     });
 
-    _.take(screenShotsTablet, 4).forEach(function(thumb) {
+    Fliplet.Utils.take(screenShotsTablet, 4).forEach(function(thumb) {
       $('.tablet-thumbs').append(addThumb(thumb));
     });
 
@@ -226,7 +226,7 @@ function loadEnterpriseData() {
 
     /* ADD BUNDLE ID */
     if (name === 'fl-ent-bundleId' && typeof enterpriseSubmission.data[name] === 'undefined') {
-      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName);
+      var bundleId = 'com.' + Fliplet.Utils.camelCase(organizationName) + '.' + Fliplet.Utils.camelCase(appName);
 
       createBundleId(bundleId).then(function(response) {
         if (response.resultCount === 0) {
@@ -375,11 +375,11 @@ function submissionBuild(appSubmission, origin) {
 function save(origin, submission) {
   return Fliplet.App.Submissions.get()
     .then(function(submissions) {
-      var savedSubmission = _.find(submissions, function(sub) {
+      var savedSubmission = Fliplet.Utils.find(submissions, function(sub) {
         return sub.id === submission.id;
       });
 
-      submission = _.extend(savedSubmission, submission);
+      submission = Fliplet.Utils.extend(savedSubmission, submission);
 
       return Promise.resolve();
     })
@@ -450,11 +450,11 @@ function requestBuild(origin, submission) {
 
   return Fliplet.App.Submissions.get()
     .then(function(submissions) {
-      var savedSubmission = _.find(submissions, function(sub) {
+      var savedSubmission = Fliplet.Utils.find(submissions, function(sub) {
         return sub.id === submission.id;
       });
 
-      submission = _.extend(savedSubmission, submission);
+      submission = Fliplet.Utils.extend(savedSubmission, submission);
 
       return Promise.resolve();
     })
@@ -513,7 +513,7 @@ function saveAppStoreData(request) {
     data[name] = value;
   });
 
-  if (!_.isUndefined(previousAppStoreSubmission)) {
+  if (!Fliplet.Utils.isUndefined(previousAppStoreSubmission)) {
     data['previousResults'] = previousAppStoreSubmission.result;
   }
 
@@ -564,7 +564,7 @@ function saveEnterpriseData(request) {
     data[name] = value;
   });
 
-  if (!_.isUndefined(previousEnterpriseSubmission)) {
+  if (!Fliplet.Utils.isUndefined(previousEnterpriseSubmission)) {
     data['previousResults'] = previousEnterpriseSubmission.result;
   }
 
@@ -614,7 +614,7 @@ function saveProgressOnClose() {
 
 function init() {
   Fliplet.Apps.get().then(function(apps) {
-    appInfo = _.find(apps, function(app) {
+    appInfo = Fliplet.Utils.find(apps, function(app) {
       return app.id === Fliplet.Env.get('appId');
     });
   });
@@ -1205,7 +1205,7 @@ function fileIsAPK(file) {
 }
 
 function checkSubmissionStatus(origin, googleSubmissions) {
-  var submissionsToShow = _.filter(googleSubmissions, function(submission) {
+  var submissionsToShow = Fliplet.Utils.filter(googleSubmissions, function(submission) {
     return submission.status === 'queued' || submission.status === 'submitted' || submission.status === 'processing' || submission.status === 'completed' || submission.status === 'failed' || submission.status === 'cancelled' || submission.status === 'ready-for-testing' || submission.status === 'tested';
   });
 
@@ -1221,7 +1221,7 @@ function checkSubmissionStatus(origin, googleSubmissions) {
       var appBuild;
       var appBundle;
       var debugApp;
-      var submissionType = _.get(submission, 'data.submissionType');
+      var submissionType = Fliplet.Utils.get(submission, 'data.submissionType');
 
       // Default copy for testing status for different users
       if (submission.status === 'ready-for-testing') {
@@ -1237,27 +1237,27 @@ function checkSubmissionStatus(origin, googleSubmissions) {
       }
 
       if (submission.result.appBuild && submission.result.appBuild.files) {
-        appBuild = _.find(submission.result.appBuild.files, function(file) {
+        appBuild = Fliplet.Utils.find(submission.result.appBuild.files, function(file) {
           return fileIsAPK(file);
         });
       } else if (submission.data.previousResults && submission.data.previousResults.appBuild && submission.data.previousResults.appBuild.files) {
-        appBuild = _.find(submission.data.previousResults.appBuild.files, function(file) {
+        appBuild = Fliplet.Utils.find(submission.data.previousResults.appBuild.files, function(file) {
           return fileIsAPK(file);
         });
       }
 
       if (submission.result.appBundle && submission.result.appBundle.files) {
-        appBundle = _.find(submission.result.appBundle.files, function(file) {
+        appBundle = Fliplet.Utils.find(submission.result.appBundle.files, function(file) {
           return fileIsBundle(file);
         });
       }
 
       if (submission.result.debugApp && submission.result.debugApp.files) {
-        debugApp = _.find(submission.result.debugApp.files, function(file) {
+        debugApp = Fliplet.Utils.find(submission.result.debugApp.files, function(file) {
           return fileIsAPK(file);
         });
       } else if (submission.data.previousResults && submission.data.previousResults.debugApp && submission.data.previousResults.debugApp.files) {
-        debugApp = _.find(submission.data.previousResults.debugApp.files, function(file) {
+        debugApp = Fliplet.Utils.find(submission.data.previousResults.debugApp.files, function(file) {
           return fileIsAPK(file);
         });
       }
@@ -1272,8 +1272,8 @@ function checkSubmissionStatus(origin, googleSubmissions) {
       build[submission.status] = true;
       build.fileUrl = appBuild ? removeAuthTokenFromFileUrl(appBuild.url) : '';
       build.bundleUrl = appBundle ? removeAuthTokenFromFileUrl(appBundle.url) : '';
-      build.versionCode = _.get(submission, ['data', submissionTypePrefixes[submissionType] + 'versionCode']);
-      build.versionNumber = _.get(submission, ['data', submissionTypePrefixes[submissionType] + 'versionNumber']);
+      build.versionCode = Fliplet.Utils.get(submission, ['data', submissionTypePrefixes[submissionType] + 'versionCode']);
+      build.versionNumber = Fliplet.Utils.get(submission, ['data', submissionTypePrefixes[submissionType] + 'versionNumber']);
 
       if (userInfo && userInfo.user && (userInfo.user.isAdmin || userInfo.user.isImpersonating)) {
         build.debugFileUrl = debugApp ? removeAuthTokenFromFileUrl(debugApp.url) : '';
@@ -1289,59 +1289,59 @@ function checkSubmissionStatus(origin, googleSubmissions) {
 }
 
 function submissionChecker(submissions) {
-  var asub = _.filter(submissions, function(submission) {
+  var asub = Fliplet.Utils.filter(submissions, function(submission) {
     return submission.data.submissionType === 'appStore' && submission.platform === 'android';
   });
 
-  var completedSubs = _.filter(asub, function(submission) {
+  var completedSubs = Fliplet.Utils.filter(asub, function(submission) {
     return submission.status === 'completed';
   });
 
   // Ordering
-  asub = _.orderBy(asub, function(submission) {
+  asub = Fliplet.Utils.orderBy(asub, function(submission) {
     return new Date(submission.createdAt).getTime();
   }, ['desc']);
   checkSubmissionStatus('appStore', asub);
 
-  appStoreSubmission = _.maxBy(asub, function(el) {
+  appStoreSubmission = Fliplet.Utils.maxBy(asub, function(el) {
     return el.id;
   });
 
-  previousAppStoreSubmission = _.maxBy(completedSubs, function(el) {
+  previousAppStoreSubmission = Fliplet.Utils.maxBy(completedSubs, function(el) {
     return el.id;
   });
 
-  var esub = _.filter(submissions, function(submission) {
+  var esub = Fliplet.Utils.filter(submissions, function(submission) {
     return submission.data.submissionType === 'enterprise' && submission.platform === 'android';
   });
 
-  var completedEnterpriseSubs = _.filter(esub, function(submission) {
+  var completedEnterpriseSubs = Fliplet.Utils.filter(esub, function(submission) {
     return submission.status === 'completed';
   });
 
   // Ordering
-  esub = _.orderBy(esub, function(submission) {
+  esub = Fliplet.Utils.orderBy(esub, function(submission) {
     return new Date(submission.createdAt).getTime();
   }, ['desc']);
   checkSubmissionStatus('enterprise', esub);
 
-  enterpriseSubmission = _.maxBy(esub, function(el) {
+  enterpriseSubmission = Fliplet.Utils.maxBy(esub, function(el) {
     return el.id;
   });
 
-  previousEnterpriseSubmission = _.maxBy(completedEnterpriseSubs, function(el) {
+  previousEnterpriseSubmission = Fliplet.Utils.maxBy(completedEnterpriseSubs, function(el) {
     return el.id;
   });
 
-  if (_.isUndefined(appStoreSubmission)) {
+  if (Fliplet.Utils.isUndefined(appStoreSubmission)) {
     appStoreSubmission = {};
   }
 
-  if (_.isUndefined(enterpriseSubmission)) {
+  if (Fliplet.Utils.isUndefined(enterpriseSubmission)) {
     enterpriseSubmission = {};
   }
 
-  if (_.isEmpty(appStoreSubmission)) {
+  if (Fliplet.Utils.isEmpty(appStoreSubmission)) {
     Fliplet.App.Submissions.create({
       platform: 'android',
       data: {
@@ -1353,7 +1353,7 @@ function submissionChecker(submissions) {
       });
   }
 
-  if (_.isEmpty(enterpriseSubmission)) {
+  if (Fliplet.Utils.isEmpty(enterpriseSubmission)) {
     Fliplet.App.Submissions.create({
       platform: 'android',
       data: {
@@ -1367,19 +1367,19 @@ function submissionChecker(submissions) {
 }
 
 function googleSubmissionChecker(submissions) {
-  var asub = _.filter(submissions, function(submission) {
+  var asub = Fliplet.Utils.filter(submissions, function(submission) {
     return submission.data.submissionType === 'appStore' && submission.platform === 'android';
   });
 
-  var esub = _.filter(submissions, function(submission) {
+  var esub = Fliplet.Utils.filter(submissions, function(submission) {
     return submission.data.submissionType === 'enterprise' && submission.platform === 'android';
   });
 
   // Ordering
-  asub = _.orderBy(asub, function(submission) {
+  asub = Fliplet.Utils.orderBy(asub, function(submission) {
     return new Date(submission.createdAt).getTime();
   }, ['desc']);
-  esub = _.orderBy(esub, function(submission) {
+  esub = Fliplet.Utils.orderBy(esub, function(submission) {
     return new Date(submission.createdAt).getTime();
   }, ['desc']);
 
@@ -1473,7 +1473,7 @@ function initialLoad(initial, timeout) {
             url: 'v1/widgets?include_instances=true&tags=type:appComponent&appId=' + Fliplet.Env.get('appId') + '&package=com.fliplet.analytics'
           })
             .then(function(res) {
-              var isEnabled = !_.isEmpty(res.widgets[0].instances);
+              var isEnabled = !Fliplet.Utils.isEmpty(res.widgets[0].instances);
 
               if (isEnabled) {
                 $('[data-fl-analytics-status]').each(function(index, item) {
@@ -1489,7 +1489,7 @@ function initialLoad(initial, timeout) {
 
           hasFolders = true;
 
-          var appleOnly = _.filter(appSettings.folderStructure, function(obj) {
+          var appleOnly = Fliplet.Utils.filter(appSettings.folderStructure, function(obj) {
             return obj.platform === 'apple';
           });
 
