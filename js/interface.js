@@ -31,12 +31,12 @@ var formInputSelectors = [
 /* FUNCTIONS */
 
 var createBundleId = async function(bundleId) {
-  const { exists } = await Fliplet.API.request({
+  const response = await Fliplet.API.request({
     method: 'GET',
     url: `v1/apps/bundle/android/exists/${bundleId}`
   });
 
-  return exists;
+  return response.exists;
 };
 
 function incrementVersionNumber(versionNumber) {
