@@ -30,13 +30,11 @@ var formInputSelectors = [
 
 /* FUNCTIONS */
 
-var createBundleId = async function(bundleId) {
-  const response = await Fliplet.API.request({
-    method: 'GET',
-    url: `v1/apps/bundle/android/exists/${bundleId}`
+var createBundleId = function(bundleId) {
+  return $.ajax({
+    url: 'https://itunes.apple.com/lookup?bundleId=' + bundleId,
+    dataType: 'jsonp'
   });
-
-  return response.exists;
 };
 
 function incrementVersionNumber(versionNumber) {
@@ -72,7 +70,7 @@ function addThumb(thumb) {
 }
 
 function loadAppStoreData() {
-  $('#appStoreConfiguration [name]').each(async function(i, el) {
+  $('#appStoreConfiguration [name]').each(function(i, el) {
     var name = $(el).attr('name');
 
     /* APP SCREENSHOTS */
@@ -109,16 +107,17 @@ function loadAppStoreData() {
 
     /* ADD BUNDLE ID */
     if (name === 'fl-store-bundleId' && typeof appStoreSubmission.data[name] === 'undefined') {
-      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName).toLowerCase();
-      const bundleIdExists = await createBundleId(bundleId);
+      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName);
 
-      if (!bundleIdExists) {
-        $('.bundleId-store-text').html(bundleId);
-        $('[name="' + name + '"]').val(bundleId);
-      } else {
-        $('.bundleId-store-text').html(bundleId + 1);
-        $('[name="' + name + '"]').val(bundleId + 1);
-      }
+      createBundleId(bundleId).then(function(response) {
+        if (response.resultCount === 0) {
+          $('.bundleId-store-text').html(bundleId);
+          $('[name="' + name + '"]').val(bundleId);
+        } else {
+          $('.bundleId-store-text').html(bundleId + (response.resultCount + 1));
+          $('[name="' + name + '"]').val(bundleId + (response.resultCount + 1));
+        }
+      });
 
       return;
     }
@@ -222,21 +221,22 @@ function checkFileExtension(fileName, element) {
 }
 
 function loadEnterpriseData() {
-  $('#enterpriseConfiguration [name]').each(async function(i, el) {
+  $('#enterpriseConfiguration [name]').each(function(i, el) {
     var name = $(el).attr('name');
 
     /* ADD BUNDLE ID */
     if (name === 'fl-ent-bundleId' && typeof enterpriseSubmission.data[name] === 'undefined') {
-      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName).toLowerCase();
-      const bundleIdExists = await createBundleId(bundleId);
+      var bundleId = 'com.' + _.camelCase(organizationName) + '.' + _.camelCase(appName);
 
-      if (!bundleIdExists) {
-        $('.bundleId-apk-text').html(bundleId);
-        $('[name="' + name + '"]').val(bundleId);
-      } else {
-        $('.bundleId-apk-text').html(bundleId + 1);
-        $('[name="' + name + '"]').val(bundleId + 1);
-      }
+      createBundleId(bundleId).then(function(response) {
+        if (response.resultCount === 0) {
+          $('.bundleId-apk-text').html(bundleId);
+          $('[name="' + name + '"]').val(bundleId);
+        } else {
+          $('.bundleId-apk-text').html(bundleId + (response.resultCount + 1));
+          $('[name="' + name + '"]').val(bundleId + (response.resultCount + 1));
+        }
+      });
 
       return;
     }
@@ -681,38 +681,6 @@ function validateImageUrl(url, imageSelector, errorSelector) {
   });
 }
 
-async function isBundleIdUnique(configuration) {
-  var bundleIdValue = ($(`[name="fl-${configuration}-bundleId"]`).val() || '').trim();
-
-  try {
-    var bundleIdExists = await createBundleId(bundleIdValue);
-
-    if (bundleIdExists) {
-      var $input = $('#fl-store-bundleId');
-      var $group = $input.closest('.form-group');
-      var $block = $group.find('.help-block.with-errors');
-
-      $block.html('<ul class="list-unstyled"><li>Bundle ID already exists on the Play Store. Please choose a unique Bundle ID.</li></ul>');
-      $group.addClass('has-error has-danger');
-      $('.fl-sb-appStore .fl-bundleId-holder').addClass('hidden');
-      $('.fl-sb-appStore .fl-bundleId-field').addClass('show');
-      setTimeout(checkGroupErrors, 0);
-
-      Fliplet.Modal.alert({
-        message: 'Bundle ID already exists. Please choose a unique Bundle ID.'
-      });
-
-      return false;
-    }
-
-    return true;
-  } catch (e) {
-    Fliplet.Modal.alert({
-      message: 'We could not verify the Bundle ID. Please try again.'
-    });
-  }
-}
-
 /* ATTACH LISTENERS */
 
 $('[data-toggle="tooltip"]').tooltip({
@@ -765,21 +733,6 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
   .on('hidden.bs.tab', function() {
     Fliplet.Widget.autosize();
   });
-
-// Force on-the-fly validation for Bundle ID fields (validate only the field, not the whole form)
-$(document).on('input focusout', '#fl-store-bundleId, #fl-ent-bundleId', function() {
-  var $field = $(this);
-  var $form = $field.closest('form');
-  var validator = $form.data('bs.validator');
-
-  $form.validator('update');
-
-  if (validator && typeof validator.validateInput === 'function') {
-    validator.validateInput($field);
-  }
-
-  checkGroupErrors();
-});
 
 $('[name="fl-store-keywords"]').on('tokenfield:createtoken', function(e) {
   var currentValue = e.currentTarget.value.replace(/,\s+/g, ',');
@@ -952,7 +905,7 @@ $('form').validator({
   }
 });
 
-$('#appStoreConfiguration').validator().on('submit', async function(event) {
+$('#appStoreConfiguration').validator().on('submit', function(event) {
   if (!storeFeatures.public) {
     Fliplet.Studio.emit('overlay', {
       name: 'app-settings',
@@ -1006,10 +959,6 @@ $('#appStoreConfiguration').validator().on('submit', async function(event) {
     return;
   }
 
-  if (!await isBundleIdUnique('store')) {
-    return;
-  }
-
   if (appInfo && appInfo.productionAppId) {
     if (allAppData.indexOf('appStore') > -1) {
       var message = 'Are you sure you wish to update your published app?';
@@ -1042,7 +991,7 @@ $('#appStoreConfiguration').validator().on('submit', async function(event) {
   setTimeout(checkGroupErrors, 0);
 });
 
-$('#enterpriseConfiguration').validator().on('submit', async function(event) {
+$('#enterpriseConfiguration').validator().on('submit', function(event) {
   if (!storeFeatures.private) {
     Fliplet.Studio.emit('overlay', {
       name: 'app-settings',
@@ -1093,10 +1042,6 @@ $('#enterpriseConfiguration').validator().on('submit', async function(event) {
   if (mustReviewTos) {
     Fliplet.Studio.emit('onMustReviewTos');
 
-    return;
-  }
-
-  if (!await isBundleIdUnique('ent')) {
     return;
   }
 
