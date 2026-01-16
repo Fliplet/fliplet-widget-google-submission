@@ -2,6 +2,10 @@ var widgetId = Fliplet.Widget.getDefaultId();
 var widgetData = Fliplet.Widget.getData(widgetId) || {};
 var storeFeatures = widgetData.appFeatures.hasOwnProperty('appStores')
   && widgetData.appFeatures.appStores.google;
+
+// Check for hideStoreTab query parameter
+var urlParams = new URLSearchParams(window.location.search);
+var hideStoreTab = urlParams.get('hideStoreTab') === 'true';
 var mustReviewTos = widgetData.mustReviewTos;
 var appName = '';
 var organizationName = '';
@@ -618,6 +622,14 @@ function init() {
       return app.id === Fliplet.Env.get('appId');
     });
   });
+
+  // Hide Google Play tab if hideStoreTab query parameter is true
+  if (hideStoreTab) {
+    $('#appstore-control').hide();
+    $('#appstore-tab').removeClass('active');
+    $('#fliplet-signed-control').addClass('active');
+    $('#fliplet-signed-tab').addClass('active');
+  }
 
   $('#fl-store-keywords').tokenfield();
 
