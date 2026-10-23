@@ -58,6 +58,13 @@ const SERVICE_ACCUNT_FILE_VALIDATION_MESSAGE = {
   INVALID_PRIVATE_KEY: 'Error: the private_key is invalid',
 }
 
+// the API validates the key with a test send to a dummy token, so these errors mean Google accepted the key
+const VALID_SERVICE_ACCOUNT_RESPONSE_MESSAGES = [
+  'SenderId mismatch',
+  'Requested entity was not found.',
+  'NotRegistered'
+];
+
 const validateGoogleServicesFile = async (file) => {
   const fileReader = new FileReader();
 
@@ -147,7 +154,7 @@ const validateServiceAccountFile = async (file) => {
       errorMessage = SERVICE_ACCUNT_FILE_VALIDATION_MESSAGE.INVALID_PRIVATE_KEY;
     }
 
-    state.isServiceAccountFileValid = !errorMessage && message === 'SenderId mismatch' || message === 'Requested entity was not found.';
+    state.isServiceAccountFileValid = !errorMessage && VALID_SERVICE_ACCOUNT_RESPONSE_MESSAGES.includes(message);
 
     validationMessageElement.innerHTML = state.isServiceAccountFileValid
       ? FILE_VALIDATION_MESSAGE.SUCCESS
